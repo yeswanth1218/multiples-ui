@@ -81,7 +81,10 @@ const AnalyticsPage = () => {
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {keyMetrics.map((metric, index) => (
-                    <div key={index} className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div 
+                        key={index} 
+                        className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                    >
                         <div className="flex items-center justify-between mb-4">
                             <div className={`p-3 rounded-lg ${metric.color} bg-opacity-10 text-white`}>
                                 <metric.icon size={24} className={metric.color.replace('bg-', 'text-')} />
@@ -99,7 +102,7 @@ const AnalyticsPage = () => {
             {/* Charts Row 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Investment vs Valuation Growth */}
-                <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Portfolio Growth (USD Millions)</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
@@ -129,7 +132,7 @@ const AnalyticsPage = () => {
                 </div>
 
                 {/* Sector Allocation */}
-                <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Sector Allocation</h3>
                     <div className="h-80 w-full flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
@@ -158,7 +161,7 @@ const AnalyticsPage = () => {
             {/* Charts Row 2 & Table */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Stage Distribution */}
-                <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Portfolio by Stage</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">
@@ -173,7 +176,7 @@ const AnalyticsPage = () => {
                 </div>
 
                 {/* Top Performers Table */}
-                <div className="lg:col-span-2 bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                <div className="lg:col-span-2 relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Top Performing Assets</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">

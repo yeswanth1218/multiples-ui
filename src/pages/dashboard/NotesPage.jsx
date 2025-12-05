@@ -23,7 +23,7 @@ const NotesPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {notes.map((note) => (
-                    <div key={note.id} className={`p-6 rounded-xl border border-transparent ${note.color} hover:shadow-lg transition-shadow cursor-pointer group relative`}>
+                    <div key={note.id} className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group cursor-pointer">
                          <div className="flex justify-between items-start mb-4">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg">{note.title}</h3>
                             <button className="opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-black dark:hover:text-white">

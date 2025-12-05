@@ -69,6 +69,13 @@ const SECTIONS = [
     "Regulatory & Compliance Adherence"
 ];
 
+const STATUS_STYLES = {
+    "In-Progress": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
+    "Done": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
+    "Blocked": "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
+    "Not Started": "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
+};
+
 const ActionItemsPage = () => {
     const [selectedSection, setSelectedSection] = useState(null);
     const [expandedRows, setExpandedRows] = useState({ 2: true }); // Default expand 2nd item for demo
@@ -377,9 +384,67 @@ const ActionItemsPage = () => {
         }));
     };
 
+    const filteredItems = selectedSection 
+        ? items.filter(item => item.section === selectedSection)
+        : items;
+
     return (
-        <div className="h-full flex flex-col animate-in fade-in duration-500 space-y-6">
-            {/* New Sub Item Modal */}
+        <div className="space-y-6 animate-in fade-in duration-500 pb-10">
+            {/* Header Section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Action Items</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage key deliverables</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="relative hidden md:block">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input 
+                            type="text" 
+                            placeholder="Search actions..." 
+                            className="pl-9 pr-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-64"
+                        />
+                    </div>
+                    <button className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <Filter size={16} />
+                        Filter
+                    </button>
+                    <button 
+                        onClick={() => setIsModalOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors shadow-sm"
+                    >
+                        <Plus size={16} />
+                        New Item
+                    </button>
+                </div>
+            </div>
+
+            {/* Quick Stats / Overview Tiles - Glassmorphism applied */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[
+                    { label: 'Total Items', value: items.length, icon: LayoutGrid, color: 'blue' },
+                    { label: 'In Progress', value: items.filter(i => i.status === 'In-Progress').length, icon: TrendingUp, color: 'amber' },
+                    { label: 'Completed', value: items.filter(i => i.status === 'Done').length, icon: CheckCircle, color: 'emerald' },
+                    { label: 'Overdue', value: '2', icon: AlertCircle, color: 'red' },
+                ].map((stat, index) => (
+                    <div 
+                        key={index} 
+                        className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-5 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                    >
+                        <div className="flex items-center justify-between mb-3">
+                            <div className={`p-2 rounded-lg bg-${stat.color}-50 dark:bg-${stat.color}-900/20 text-${stat.color}-600 dark:text-${stat.color}-400`}>
+                                <stat.icon size={20} />
+                            </div>
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full bg-${stat.color}-50 dark:bg-${stat.color}-900/20 text-${stat.color}-600 dark:text-${stat.color}-400`}>
+                                +12%
+                            </span>
+                        </div>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{stat.value}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
+                    </div>
+                ))}
+            </div>
+
             {isSubItemModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                     <div className="bg-white dark:bg-[#18181b] w-full max-w-md rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-in zoom-in-95 duration-200">
@@ -803,6 +868,7 @@ const ActionItemsPage = () => {
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Sno</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Date</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase w-1/3">Action Item</th>
+                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">End ETA</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Owner</th>
                                         <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Assignee</th>
@@ -833,6 +899,11 @@ const ActionItemsPage = () => {
                                                             {item.subItems.filter(s => s.completed).length}/{item.subItems.length} sub-items
                                                         </div>
                                                     )}
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[item.status] || STATUS_STYLES['Not Started']}`}>
+                                                        {item.status || 'Not Started'}
+                                                    </span>
                                                 </td>
                                                 <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                                                     {item.eta ? (
@@ -912,7 +983,7 @@ const ActionItemsPage = () => {
                                                             {activeMenuId === item.id && (
                                                                 <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden animate-in zoom-in-95 duration-100">
                                                                     <div className="px-3 py-2 text-[10px] font-semibold text-gray-400 uppercase tracking-wider bg-gray-50/50 dark:bg-[#27272a]/50">Status</div>
-                                                                    {['In-Progress', 'Done', 'Blocked'].map(status => (
+                                                                    {['In-Progress', 'Done', 'Blocked', 'Not Started'].map(status => (
                                                                         <button
                                                                             key={status}
                                                                             onClick={() => {
@@ -952,7 +1023,7 @@ const ActionItemsPage = () => {
                                             {/* Expanded Row (Sub-checklist) */}
                                             {expandedRows[item.id] && (
                                                 <tr className="bg-gray-50/30 dark:bg-[#27272a]/20 animate-in slide-in-from-top-2 duration-200">
-                                                    <td colSpan="9" className="px-4 py-4">
+                                                    <td colSpan="10" className="px-4 py-4">
                                                         <div className="ml-14 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
                                                             <div className="flex items-center justify-between mb-3">
                                                                 <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
