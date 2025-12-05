@@ -1,5 +1,6 @@
 import React from 'react';
-import { ChevronRight, Cloud } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Cloud } from 'lucide-react';
 
 // Import logo images
 import fintechLogo from '../../assets/fintech.png';
@@ -11,15 +12,17 @@ import manufacturingLogo from '../../assets/manufacturing.png';
 import edtechLogo from '../../assets/ed-tech.png';
 
 const HomePage = () => {
+    const navigate = useNavigate();
+
     const sectors = [
-        { title: 'FinTech', logo: fintechLogo, count: '124 Projects', desc: 'Financial technology solutions & payments', color: 'bg-blue-100 dark:bg-blue-900/30' },
-        { title: 'HealthCare', logo: healthcareLogo, count: '86 Active', desc: 'Medical records & patient management', color: 'bg-red-100 dark:bg-red-900/30' },
-        { title: 'AI & ML', logo: aiLogo, count: '45 Models', desc: 'Artificial intelligence & automation', color: 'bg-purple-100 dark:bg-purple-900/30' },
-        { title: 'SaaS', icon: Cloud, count: '210 Products', desc: 'Software as a service platforms', color: 'bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400' },
-        { title: 'Agritech', logo: agritechLogo, count: '32 Farms', desc: 'Agricultural innovation & tracking', color: 'bg-green-100 dark:bg-green-900/30' },
-        { title: 'Pharma', logo: pharmaLogo, count: '18 Labs', desc: 'Pharmaceutical research & trials', color: 'bg-teal-100 dark:bg-teal-900/30' },
-        { title: 'Manufacturing', logo: manufacturingLogo, count: '64 Units', desc: 'Industrial production & supply chain', color: 'bg-orange-100 dark:bg-orange-900/30' },
-        { title: 'EduTech', logo: edtechLogo, count: '95 Courses', desc: 'Educational technology & LMS', color: 'bg-yellow-100 dark:bg-yellow-900/30' },
+        { title: 'FinTech', logo: fintechLogo, count: '124 Projects', desc: 'Financial technology solutions & payments' },
+        { title: 'HealthCare', logo: healthcareLogo, count: '86 Active', desc: 'Medical records & patient management' },
+        { title: 'AI & ML', logo: aiLogo, count: '45 Models', desc: 'Artificial intelligence & automation' },
+        { title: 'SaaS', icon: Cloud, count: '210 Products', desc: 'Software as a service platforms' },
+        { title: 'Agritech', logo: agritechLogo, count: '32 Farms', desc: 'Agricultural innovation & tracking' },
+        { title: 'Pharma', logo: pharmaLogo, count: '18 Labs', desc: 'Pharmaceutical research & trials' },
+        { title: 'Manufacturing', logo: manufacturingLogo, count: '64 Units', desc: 'Industrial production & supply chain' },
+        { title: 'EduTech', logo: edtechLogo, count: '95 Courses', desc: 'Educational technology & LMS' },
     ];
 
     return (
@@ -31,24 +34,34 @@ const HomePage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {sectors.map((sector, index) => (
-                    <div key={index} className="bg-gradient-to-b from-gray-100/80 to-white dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08),0_8px_20px_rgba(0,0,0,0.12),0_16px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_4px_8px_rgba(0,0,0,0.4),0_8px_20px_rgba(0,0,0,0.5),0_16px_32px_rgba(0,0,0,0.4)] hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300 cursor-pointer group hover:-translate-y-1">
-                        <div className={`w-12 h-12 rounded-lg ${sector.color} flex items-center justify-center mb-4 transition-transform group-hover:scale-110 duration-300 overflow-hidden`}>
-                            {sector.logo ? (
-                                <img src={sector.logo} alt={sector.title} className="w-8 h-8 object-contain dark:invert dark:brightness-200" />
-                            ) : (
-                                <sector.icon size={24} />
-                            )}
+                    <div 
+                        key={index} 
+                        onClick={() => navigate(`/dashboard/sector/${sector.title.toLowerCase()}`)}
+                        className="relative bg-gradient-to-b from-gray-100/80 to-white dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200/60 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08),0_8px_20px_rgba(0,0,0,0.12),0_16px_32px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_4px_8px_rgba(0,0,0,0.4),0_8px_20px_rgba(0,0,0,0.5),0_16px_32px_rgba(0,0,0,0.4)] hover:border-blue-200 dark:hover:border-blue-900/50 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-all duration-300 cursor-pointer group hover:-translate-y-1 flex flex-col overflow-hidden"
+                    >
+                        
+                        {/* Count Badge */}
+                        <div className="absolute top-4 right-4 z-10">
+                            <span className="px-2 py-1 rounded text-[10px] font-semibold bg-gray-100 dark:bg-[#27272a] text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 uppercase tracking-wide">
+                                {sector.count}
+                            </span>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{sector.title}</h3>
-                        <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">{sector.count}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{sector.desc}</p>
-                        <div className="mt-4 pt-4 border-t border-gray-50 dark:border-[#27272a] flex items-center justify-between">
-                            <div className="flex -space-x-2">
-                                {[1, 2, 3].map(i => (
-                                    <div key={i} className="w-6 h-6 rounded-full bg-gray-200 dark:bg-[#27272a] border-2 border-white dark:border-[#18181b]"></div>
-                                ))}
+
+                        {/* Icon Section - Centered & Pill shaped */}
+                        <div className="flex-1 flex items-center justify-center py-8 min-h-[140px] relative z-10">
+                            <div className="px-6 py-3 rounded-full bg-white dark:bg-white/10 border border-gray-100 dark:border-white/5 shadow-sm flex items-center justify-center transition-transform group-hover:scale-110 duration-300">
+                                {sector.logo ? (
+                                    <img src={sector.logo} alt={sector.title} className="w-8 h-8 object-contain dark:invert dark:brightness-200" />
+                                ) : (
+                                    <sector.icon size={24} className="text-gray-900 dark:text-white" />
+                                )}
                             </div>
-                            <ChevronRight size={16} className="text-gray-400 group-hover:text-gray-600 dark:group-hover:text-white transition-colors" />
+                        </div>
+
+                        {/* Content Section */}
+                        <div className="mt-auto relative z-10">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{sector.title}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{sector.desc}</p>
                         </div>
                     </div>
                 ))}

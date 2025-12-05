@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/auth/LoginPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import HomePage from './pages/dashboard/HomePage';
+import SectorPage from './pages/dashboard/SectorPage';
+import CompanyPage from './pages/dashboard/CompanyPage';
 import OverviewPage from './pages/dashboard/OverviewPage';
 import AnalyticsPage from './pages/dashboard/AnalyticsPage';
 import WorkflowPage from './pages/dashboard/WorkflowPage';
@@ -30,10 +32,13 @@ const tableData = [
   { name: 'Neo Anderson', traits: ['Serial Founder', 'Technical Founder', 'Masters Degree'], company: 'Matrix', dueDate: '30/10/2025' },
 ];
 
+import { TaskProvider } from './context/TaskContext';
+
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <TaskProvider>
+      <BrowserRouter>
+        <Routes>
         {/* Login Route */}
         <Route path="/" element={<LoginPage />} />
 
@@ -41,6 +46,8 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Navigate to="home" replace />} />
           <Route path="home" element={<HomePage />} />
+          <Route path="sector/:sectorId" element={<SectorPage />} />
+          <Route path="company/:companyId" element={<CompanyPage />} />
           <Route path="overview" element={<OverviewPage chartData={chartData} tableData={tableData} />} />
           <Route path="action-items" element={<ActionItemsPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
@@ -57,6 +64,7 @@ export default function App() {
         {/* Catch-all redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+      </BrowserRouter>
+    </TaskProvider>
   );
 }

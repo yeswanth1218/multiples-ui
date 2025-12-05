@@ -37,11 +37,13 @@ import { PieChart,
 
 const OverviewPage = ({ chartData, tableData }) => {
     const [savingsData, setSavingsData] = useState([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setSavingsData(Array.from({ length: 40 }).map(() => Math.random() * 80 + 20));
-        }, 0);
+            setIsLoaded(true);
+        }, 100);
         return () => clearTimeout(timer);
     }, []);
 
@@ -145,8 +147,8 @@ const OverviewPage = ({ chartData, tableData }) => {
                                     <div className="absolute -top-10 opacity-0 group-hover:opacity-100 bg-black text-white text-xs py-1 px-2 rounded transition-opacity pointer-events-none whitespace-nowrap z-10">
                                         Rev: {data.thisYear}
                                     </div>
-                                    <Bar height={data.thisYear} color="bg-gray-900 dark:bg-white group-hover:opacity-80" />
-                                    <Bar height={data.lastYear} color="bg-blue-300 dark:bg-blue-600 group-hover:opacity-80" />
+                                    <Bar height={isLoaded ? data.thisYear : 0} color="bg-gray-900 dark:bg-white group-hover:opacity-80" />
+                                    <Bar height={isLoaded ? data.lastYear : 0} color="bg-blue-300 dark:bg-blue-600 group-hover:opacity-80" />
                                 </div>
                                 <span className="text-[10px] sm:text-xs text-gray-400 font-medium whitespace-nowrap">{data.label}</span>
                             </div>
@@ -166,26 +168,46 @@ const OverviewPage = ({ chartData, tableData }) => {
                     </div>
 
                     {/* Segmented Progress Bar */}
-                    <div className="h-8 flex items-center gap-[3px] mb-8 opacity-90">
+                    <div className="h-8 flex items-end gap-[3px] mb-8 opacity-90">
                         {/* Investment - Slate 900 - 15 bars */}
                         {Array.from({ length: 15 }).map((_, i) => (
-                            <div key={`inv-${i}`} className="w-1.5 h-full rounded-sm bg-slate-900 dark:bg-slate-200"></div>
+                            <div 
+                                key={`inv-${i}`} 
+                                className="w-1.5 rounded-sm bg-slate-900 dark:bg-slate-200 transition-all duration-500 ease-out"
+                                style={{ height: isLoaded ? '100%' : '0%', transitionDelay: `${i * 20}ms` }}
+                            ></div>
                         ))}
                         {/* Holiday - Blue 500 - 10 bars */}
                         {Array.from({ length: 10 }).map((_, i) => (
-                            <div key={`hol-${i}`} className="w-1.5 h-full rounded-sm bg-blue-500 dark:bg-blue-500"></div>
+                            <div 
+                                key={`hol-${i}`} 
+                                className="w-1.5 rounded-sm bg-blue-500 dark:bg-blue-500 transition-all duration-500 ease-out"
+                                style={{ height: isLoaded ? '100%' : '0%', transitionDelay: `${(i + 15) * 20}ms` }}
+                            ></div>
                         ))}
                         {/* Home - Blue 300 - 8 bars */}
                         {Array.from({ length: 8 }).map((_, i) => (
-                            <div key={`hom-${i}`} className="w-1.5 h-full rounded-sm bg-blue-300 dark:bg-blue-300"></div>
+                            <div 
+                                key={`hom-${i}`} 
+                                className="w-1.5 rounded-sm bg-blue-300 dark:bg-blue-300 transition-all duration-500 ease-out"
+                                style={{ height: isLoaded ? '100%' : '0%', transitionDelay: `${(i + 25) * 20}ms` }}
+                            ></div>
                         ))}
                         {/* Setup - Slate 500 - 5 bars */}
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <div key={`set-${i}`} className="w-1.5 h-full rounded-sm bg-slate-500 dark:bg-slate-500"></div>
+                            <div 
+                                key={`set-${i}`} 
+                                className="w-1.5 rounded-sm bg-slate-500 dark:bg-slate-500 transition-all duration-500 ease-out"
+                                style={{ height: isLoaded ? '100%' : '0%', transitionDelay: `${(i + 33) * 20}ms` }}
+                            ></div>
                         ))}
                         {/* Sale - Slate 300 - 5 bars */}
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <div key={`sale-${i}`} className="w-1.5 h-full rounded-sm bg-slate-300 dark:bg-slate-700"></div>
+                            <div 
+                                key={`sale-${i}`} 
+                                className="w-1.5 rounded-sm bg-slate-300 dark:bg-slate-700 transition-all duration-500 ease-out"
+                                style={{ height: isLoaded ? '100%' : '0%', transitionDelay: `${(i + 38) * 20}ms` }}
+                            ></div>
                         ))}
                     </div>
 
