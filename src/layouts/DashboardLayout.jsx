@@ -19,12 +19,14 @@ import {
     Plus,
 } from 'lucide-react';
 import { SidebarItem, SectionHeader } from '../components/dashboard/Shared';
+import { useTasks } from '../context/TaskContext';
 
 const DashboardLayout = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
+    const { notes } = useTasks();
 
     // Apply dark mode class on mount and when darkMode changes
     useEffect(() => {
@@ -95,7 +97,28 @@ const DashboardLayout = () => {
 
                     {sidebarOpen && (
                         <>
-                            <SectionHeader title="Favorites" action />
+                            <SectionHeader 
+                                title="Quick Notes" 
+                                action 
+                                onAction={() => navigate('/dashboard/notes')} 
+                            />
+                            <div className="mt-1 mb-4 space-y-1">
+                                {notes && notes.length > 0 ? (
+                                    notes.slice(0, 5).map(note => (
+                                        <div 
+                                            key={note.id}
+                                            onClick={() => navigate('/dashboard/notes')}
+                                            className="flex items-center gap-2 px-4 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-black dark:hover:text-white cursor-pointer group transition-colors"
+                                        >
+                                            <div className="w-2 h-2 rounded-full border border-gray-400 group-hover:border-blue-500 transition-colors"></div>
+                                            <span className="truncate">{note.title}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="px-4 py-2 text-xs text-gray-400 italic">No notes yet</div>
+                                )}
+                            </div>
+
                             <SectionHeader title="Your Spaces" action />
                             <SectionHeader title="Folders" action />
                             <div className="mt-2 space-y-1">

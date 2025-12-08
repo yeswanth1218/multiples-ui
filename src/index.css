@@ -1,3 +1,132 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+    @page {
+        margin: 0.5cm;
+        size: auto;
+    }
+
+    /* Hide Sidebar and Navbar */
+    aside, 
+    header,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Reset layout constraints */
+            body, 
+            #root, 
+            main,
+            div[class*="flex h-screen"],
+            div[class*="overflow-y-auto"],
+            div[class*="overflow-x-auto"],
+            div[class*="overflow-auto"] {
+                display: block !important;
+                height: auto !important;
+                width: 100% !important;
+                overflow: visible !important;
+                position: static !important;
+                min-width: 0 !important;
+            }
+            
+            table {
+                min-width: 0 !important;
+                width: 100% !important;
+            }
+
+    /* Remove background colors for ink saving and clarity */
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Adjust padding for the main content wrapper */
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    main > div {
+        padding: 0 !important;
+    }
+
+    /* Ensure text is black for readability */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    
+    /* Specific overrides for dark/* Dark mode overrides */
+    .dark {
+        color: black !important;
+        background-color: white !important;
+    }
+    
+    /* Utility to hide elements in print */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Workflow Page specific overrides */
+    .workflow-scroll-container {
+        overflow: visible !important;
+        width: 100% !important;
+    }
+    
+    .workflow-container {
+        display: block !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+    }
+    
+    .workflow-column {
+        width: 100% !important;
+        margin-bottom: 20px !important;
+        break-inside: avoid !important;
+    }    
+    .dark .text-white {
+        color: black !important;
+    }
+    
+    .dark .bg-black {
+        background-color: #eee !important;
+        color: black !important;
+    }
+
+    /* Hide scrollbars */
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Ensure charts and grids break properly */
+    .grid {
+        display: block !important;
+    }
+    
+    .grid > div {
+        margin-bottom: 20px;
+        page-break-inside: avoid;
+    }
+    
+    /* Flex containers that should wrap or stack */
+    .flex-wrap {
+        flex-wrap: wrap !important;
+    }
+
+    /* Ensure table headers repeat on new pages (browser support varies but good to have) */
+    thead {
+        display: table-header-group;
+    }
+    
+    tr {
+        page-break-inside: avoid;
+    }
+
+    /* Hide buttons that are for actions only */
+    button {
+        display: none !important;
+    }
+}

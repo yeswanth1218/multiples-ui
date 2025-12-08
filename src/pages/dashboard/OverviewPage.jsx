@@ -35,9 +35,137 @@ import { PieChart,
     ReferenceDot
 } from 'recharts';
 
-const OverviewPage = ({ chartData, tableData }) => {
+const OverviewPage = ({ chartData: initialChartData, tableData: initialTableData }) => {
     const [savingsData, setSavingsData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [selectedSector, setSelectedSector] = useState('All');
+
+    const sectors = [
+        'FinTech',
+        'HealthCare',
+        'AI & ML',
+        'SaaS',
+        'Agritech',
+        'Pharma',
+        'Manufacturing',
+        'EduTech'
+    ];
+
+    // Reactive data based on selection
+    const getChartData = () => {
+        if (selectedSector === 'All') return initialChartData;
+        
+        // Generate deterministic random data based on sector name length
+        const seed = selectedSector.length;
+        return initialChartData.map(item => ({
+            ...item,
+            thisYear: Math.max(10, Math.min(100, parseInt(item.thisYear) + (seed % 2 === 0 ? 10 : -10))) + '%',
+            lastYear: Math.max(10, Math.min(100, parseInt(item.lastYear) + (seed % 3 === 0 ? 15 : -5))) + '%'
+        }));
+    };
+
+    const getTableData = () => {
+        if (selectedSector === 'All') return initialTableData;
+        
+        // Filter or modify table data
+        return initialTableData.map((item, index) => ({
+            ...item,
+            company: `${item.company} (${selectedSector})`, // Just to show reactivity
+            dueDate: `${index + 10}/11/2025`
+        }));
+    };
+
+    const getStats = () => {
+        if (selectedSector === 'All') {
+            return {
+                reserve: { value: "$2.4M", trend: "+12% ($300k)" },
+                investments: { value: "$14.5M", trend: "+8% ($1.2M)" },
+                projects: { value: "21", trend: "+24% (5)" }
+            };
+        }
+
+        // Mock stats for sectors
+        const multipliers = {
+            'FinTech': 0.8,
+            'HealthCare': 0.6,
+            'AI & ML': 0.5,
+            'SaaS': 0.7,
+            'Agritech': 0.3,
+            'Pharma': 0.4,
+            'Manufacturing': 0.9,
+            'EduTech': 0.2
+        };
+
+        const mult = multipliers[selectedSector] || 0.5;
+
+        return {
+            reserve: { 
+                value: `$${(2.4 * mult).toFixed(1)}M`, 
+                trend: `${mult > 0.5 ? '+' : '-'}${Math.floor(12 * mult)}% ($${Math.floor(300 * mult)}k)` 
+            },
+            investments: { 
+                value: `$${(14.5 * mult).toFixed(1)}M`, 
+                trend: `+${Math.floor(8 * mult)}% ($${(1.2 * mult).toFixed(1)}M)` 
+            },
+            projects: { 
+                value: Math.floor(21 * mult).toString(), 
+                trend: `+${Math.floor(24 * mult)}% (${Math.floor(5 * mult)})` 
+            }
+        };
+    };
+
+    const getSectorRevenueData = () => {
+        const baseData = [
+            { name: 'FinTech', value: 400, color: '#0f172a' }, // Slate 900
+            { name: 'HealthCare', value: 300, color: '#3b82f6' }, // Blue 500
+            { name: 'AI & ML', value: 300, color: '#93c5fd' }, // Blue 300
+            { name: 'SaaS', value: 200, color: '#64748b' }, // Slate 500
+            { name: 'Agritech', value: 100, color: '#cbd5e1' }, // Slate 300
+        ];
+
+        if (selectedSector === 'All') return baseData;
+
+        // Mock sub-sector data
+        return [
+            { name: 'Product A', value: 300, color: '#0f172a' },
+            { name: 'Product B', value: 200, color: '#3b82f6' },
+            { name: 'Services', value: 150, color: '#93c5fd' },
+            { name: 'Licensing', value: 100, color: '#64748b' },
+        ];
+    };
+
+    const getMarketGrowthData = () => {
+        const baseData = [
+            { month: 'Jan', FinTech: 2.5, HealthCare: 1.8, 'AI & ML': 3.2 },
+            { month: 'Feb', FinTech: 2.8, HealthCare: 2.0, 'AI & ML': 3.5 },
+            { month: 'Mar', FinTech: 3.0, HealthCare: 2.1, 'AI & ML': 3.8 },
+            { month: 'Apr', FinTech: 3.2, HealthCare: 2.3, 'AI & ML': 4.2 },
+            { month: 'May', FinTech: 3.1, HealthCare: 2.5, 'AI & ML': 4.5 },
+            { month: 'Jun', FinTech: 3.4, HealthCare: 2.6, 'AI & ML': 4.8 },
+        ];
+
+        if (selectedSector === 'All') return baseData;
+
+        const offset = selectedSector.length * 0.1;
+        return baseData.map(d => ({
+            month: d.month,
+            'Your Growth': parseFloat((d.FinTech + offset).toFixed(1)),
+            'Market Avg': parseFloat((d.HealthCare + offset/2).toFixed(1)),
+            'Top Competitor': parseFloat((d['AI & ML'] + offset).toFixed(1))
+        }));
+    };
+
+    const getGrowthKeys = () => {
+        if (selectedSector === 'All') return ['FinTech', 'HealthCare', 'AI & ML'];
+        return ['Your Growth', 'Market Avg', 'Top Competitor'];
+    };
+
+    const chartData = getChartData();
+    const tableData = getTableData();
+    const stats = getStats();
+    const sectorRevenueData = getSectorRevenueData();
+    const marketGrowthData = getMarketGrowthData();
+    const growthKeys = getGrowthKeys();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -46,23 +174,6 @@ const OverviewPage = ({ chartData, tableData }) => {
         }, 100);
         return () => clearTimeout(timer);
     }, []);
-
-    const sectorRevenueData = [
-        { name: 'FinTech', value: 400, color: '#0f172a' }, // Slate 900
-        { name: 'HealthCare', value: 300, color: '#3b82f6' }, // Blue 500
-        { name: 'AI & ML', value: 300, color: '#93c5fd' }, // Blue 300
-        { name: 'SaaS', value: 200, color: '#64748b' }, // Slate 500
-        { name: 'Agritech', value: 100, color: '#cbd5e1' }, // Slate 300
-    ];
-
-    const marketGrowthData = [
-        { month: 'Jan', FinTech: 2.5, HealthCare: 1.8, 'AI & ML': 3.2 },
-        { month: 'Feb', FinTech: 2.8, HealthCare: 2.0, 'AI & ML': 3.5 },
-        { month: 'Mar', FinTech: 3.0, HealthCare: 2.1, 'AI & ML': 3.8 },
-        { month: 'Apr', FinTech: 3.2, HealthCare: 2.3, 'AI & ML': 4.2 },
-        { month: 'May', FinTech: 3.1, HealthCare: 2.5, 'AI & ML': 4.5 },
-        { month: 'Jun', FinTech: 3.4, HealthCare: 2.6, 'AI & ML': 4.8 },
-    ];
 
     // Data for Radial Bar Chart
     const radialData = [
@@ -97,27 +208,50 @@ const OverviewPage = ({ chartData, tableData }) => {
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500">
+            {/* Header with Sector Dropdown */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        {selectedSector === 'All' ? 'Organization Level View' : `${selectedSector} Sector View`}
+                    </p>
+                </div>
+                <div className="relative z-20 no-print">
+                    <select
+                        value={selectedSector}
+                        onChange={(e) => setSelectedSector(e.target.value)}
+                        className="appearance-none bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-200 py-2.5 px-4 pr-10 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 cursor-pointer text-sm font-medium min-w-[160px] transition-all hover:border-gray-300 dark:hover:border-white/20"
+                    >
+                        <option value="All">All Sectors</option>
+                        {sectors.map(sector => (
+                            <option key={sector} value={sector}>{sector}</option>
+                        ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" size={16} />
+                </div>
+            </div>
+
             {/* Stats Row */}
             <div className="flex flex-wrap gap-6">
                 <StatCard
                     title="Funds in reserve"
                     subtitle="Available for allocation"
-                    value="$2.4M"
-                    trend="+12% ($300k)"
+                    value={stats.reserve.value}
+                    trend={stats.reserve.trend}
                     icon={DollarSign}
                 />
                 <StatCard
                     title="Total investments"
                     subtitle="Cumulative capital deployed"
-                    value="$14.5M"
-                    trend="+8% ($1.2M)"
+                    value={stats.investments.value}
+                    trend={stats.investments.trend}
                     icon={Briefcase}
                 />
                 <StatCard
                     title="Active Projects"
                     subtitle="Updated in the last 7 days"
-                    value="21"
-                    trend="+24% (5)"
+                    value={stats.projects.value}
+                    trend={stats.projects.trend}
                     icon={Clock}
                 />
             </div>
@@ -136,7 +270,7 @@ const OverviewPage = ({ chartData, tableData }) => {
                                 <span className="w-2 h-2 rounded-full bg-blue-300 dark:bg-blue-600"></span>
                                 Last Year
                             </div>
-                            <MoreHorizontal className="text-gray-400 cursor-pointer" />
+                            <MoreHorizontal className="text-gray-400 cursor-pointer no-print" />
                         </div>
                     </div>
 
@@ -288,9 +422,17 @@ const OverviewPage = ({ chartData, tableData }) => {
                                 <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `${value}%`} />
                                 <RechartsTooltip contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', color: '#fff' }} />
                                 <Legend />
-                                <Line type="monotone" dataKey="FinTech" stroke="#0f172a" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                                <Line type="monotone" dataKey="HealthCare" stroke="#3b82f6" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                                <Line type="monotone" dataKey="AI & ML" stroke="#93c5fd" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                                {growthKeys.map((key, index) => (
+                                    <Line 
+                                        key={key}
+                                        type="monotone" 
+                                        dataKey={key} 
+                                        stroke={index === 0 ? "#0f172a" : index === 1 ? "#3b82f6" : "#93c5fd"} 
+                                        strokeWidth={3} 
+                                        dot={{ r: 4 }} 
+                                        activeDot={{ r: 6 }} 
+                                    />
+                                ))}
                             </LineChart>
                         </ResponsiveContainer>
                     </div>

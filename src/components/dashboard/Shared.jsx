@@ -26,10 +26,17 @@ export const SidebarItem = ({ icon, label, active, badge, onClick, collapsed }) 
     );
 };
 
-export const SectionHeader = ({ title, action }) => (
+export const SectionHeader = ({ title, action, onAction }) => (
     <div className="flex items-center justify-between px-4 mt-6 mb-2">
         <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{title}</span>
-        {action && <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"><Plus size={14} /></button>}
+        {action && (
+            <button 
+                onClick={onAction}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            >
+                <Plus size={14} />
+            </button>
+        )}
     </div>
 );
 

@@ -16,15 +16,22 @@ export const SECTIONS = [
     "Fundraising & Investor relations",
     "Team Leadership & Development",
     "Brand Building",
-    "Regulatory & Compliance Adherence"
+    "Regulatory & Compliance Adherence",
+    "Others"
 ];
 
 export const TaskProvider = ({ children }) => {
+    // Notes Data
+    const [notes, setNotes] = useState([
+        { id: 1001, title: 'Q3 Goals Review', content: 'Ensure all team members are aligned on Q3 targets.', linkedTaskIds: ['ME-1'] },
+        { id: 1002, title: 'Client Feedback', content: 'Discuss the recent client feedback during the standup.', linkedTaskIds: [] }
+    ]);
+
     // Unified data combining Action Items and Workflow tasks
     const [tasks, setTasks] = useState([
         // Action Items Data
         {
-            id: 1,
+            id: 'ME-1',
             date: '2025-08-09',
             section: 'Strategy & Vision',
             title: 'Prepare a Sector Strategy & get it approved post discussion',
@@ -44,7 +51,7 @@ export const TaskProvider = ({ children }) => {
             ]
         },
         {
-            id: 2,
+            id: 'ME-2',
             date: '2025-08-09',
             section: 'Strategy & Vision',
             title: 'Prepare HR Strategy & Get it approved',
@@ -55,10 +62,10 @@ export const TaskProvider = ({ children }) => {
             progress: 50,
             priority: 'Medium',
             subItems: [
-                { id: 21, title: 'Filed DRFP approval is done', completed: true },
-                { id: 22, title: 'Already obtained Permission', completed: true },
-                { id: 23, title: 'Action item 2 completed', completed: true },
-                { id: 24, title: 'Final review pending', completed: false }
+                { id: 21, title: 'Filed DRFP approval is done', completed: true, description: 'Initial draft filed.', attachments: [] },
+                { id: 22, title: 'Already obtained Permission', completed: true, description: '', attachments: [] },
+                { id: 23, title: 'Action item 2 completed', completed: true, description: '', attachments: [] },
+                { id: 24, title: 'Final review pending', completed: false, description: 'Waiting for board feedback.', attachments: [] }
             ],
             comments: [
                 { id: 1, text: "HR team needs to be aligned.", user: "Shanil", date: "2025-08-12", avatar: "S" },
@@ -69,7 +76,7 @@ export const TaskProvider = ({ children }) => {
             ]
         },
         {
-            id: 3,
+            id: 'ME-3',
             date: '2025-08-09',
             section: 'Exit Strategy & Execution',
             title: 'Prepare Exit Road map & discuss with board - IPO',
@@ -86,7 +93,7 @@ export const TaskProvider = ({ children }) => {
             attachments: []
         },
         {
-            id: 4,
+            id: 'ME-4',
             date: '2025-08-09',
             section: 'Strategy & Vision',
             title: 'Action Item 24',
@@ -102,7 +109,7 @@ export const TaskProvider = ({ children }) => {
         },
         // Workflow Data (Integrated)
         { 
-            id: 101, 
+            id: 'ME-101', 
             title: 'Design System Update', 
             section: 'Brand Building',
             status: 'To Do', 
@@ -112,7 +119,7 @@ export const TaskProvider = ({ children }) => {
             subItems: [], comments: [], attachments: []
         },
         { 
-            id: 102, 
+            id: 'ME-102', 
             title: 'Client Meeting Prep', 
             section: 'Stakeholder Management (Internal & External)',
             status: 'To Do', 
@@ -122,7 +129,7 @@ export const TaskProvider = ({ children }) => {
             subItems: [], comments: [], attachments: []
         },
         { 
-            id: 103, 
+            id: 'ME-103', 
             title: 'Login Flow Fix', 
             section: 'Deal Execution & Structuring',
             status: 'In-Progress', 
@@ -132,17 +139,17 @@ export const TaskProvider = ({ children }) => {
             subItems: [], comments: [], attachments: []
         },
         { 
-            id: 104, 
+            id: 'ME-104', 
             title: 'Q4 Marketing Plan', 
             section: 'Brand Building',
-            status: 'In Review', 
+            status: 'In-Progress', 
             priority: 'Medium',
             assignee: 'SC',
             date: '2025-10-04',
             subItems: [], comments: [], attachments: []
         },
         { 
-            id: 105, 
+            id: 'ME-105', 
             title: 'Homepage Refresh', 
             section: 'Brand Building',
             status: 'Done', 
@@ -153,10 +160,22 @@ export const TaskProvider = ({ children }) => {
         },
     ]);
 
+    const generateId = () => {
+        // Find the highest ME-XXX number
+        const maxId = tasks.reduce((max, task) => {
+            const match = task.id.toString().match(/ME-(\d+)/);
+            if (match) {
+                return Math.max(max, parseInt(match[1], 10));
+            }
+            return max;
+        }, 0);
+        return `ME-${maxId + 1}`;
+    };
+
     const addTask = (task) => {
         const newTask = {
             ...task,
-            id: Date.now(),
+            id: generateId(),
             subItems: [],
             comments: [],
             attachments: []
@@ -172,8 +191,45 @@ export const TaskProvider = ({ children }) => {
         setTasks(prev => prev.filter(task => task.id !== id));
     };
 
+    // Notes Functions
+    const addNote = (note) => {
+        setNotes(prev => [...prev, { ...note, id: Date.now(), linkedTaskIds: note.linkedTaskIds || [] }]);
+    };
+
+    const updateNote = (id, updates) => {
+        setNotes(prev => prev.map(n => n.id === id ? { ...n, ...updates } : n));
+    };
+
+    const deleteNote = (id) => {
+        setNotes(prev => prev.filter(n => n.id !== id));
+    };
+
+    const linkNoteToTask = (noteId, taskId) => {
+        setNotes(prev => prev.map(n => {
+            if (n.id === noteId) {
+                const currentLinks = n.linkedTaskIds || [];
+                if (!currentLinks.includes(taskId)) {
+                    return { ...n, linkedTaskIds: [...currentLinks, taskId] };
+                }
+            }
+            return n;
+        }));
+    };
+
+    const unlinkNoteFromTask = (noteId, taskId) => {
+        setNotes(prev => prev.map(n => {
+            if (n.id === noteId) {
+                return { ...n, linkedTaskIds: (n.linkedTaskIds || []).filter(id => id !== taskId) };
+            }
+            return n;
+        }));
+    };
+
     return (
-        <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask, SECTIONS }}>
+        <TaskContext.Provider value={{ 
+            tasks, addTask, updateTask, deleteTask, SECTIONS,
+            notes, addNote, updateNote, deleteNote, linkNoteToTask, unlinkNoteFromTask
+        }}>
             {children}
         </TaskContext.Provider>
     );

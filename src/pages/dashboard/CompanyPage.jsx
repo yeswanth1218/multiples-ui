@@ -131,7 +131,7 @@ const CompanyPage = () => {
             <div className="flex items-center gap-4 mb-6">
                 <button 
                     onClick={() => navigate(-1)}
-                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors no-print"
                 >
                     <ArrowLeft size={20} className="text-gray-600 dark:text-gray-300" />
                 </button>
@@ -326,7 +326,7 @@ const CompanyPage = () => {
                                     <div className="text-xs text-gray-400">{prop.date}</div>
                                 </div>
                             ))}
-                            <button className="w-full py-2 mt-2 text-sm font-medium text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+                            <button className="w-full py-2 mt-2 text-sm font-medium text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors no-print">
                                 + New Request
                             </button>
                         </div>
@@ -353,7 +353,7 @@ const CompanyPage = () => {
                                     </div>
                                 </div>
                             ))}
-                            <button className="w-full py-2 mt-2 text-sm font-medium text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+                            <button className="w-full py-2 mt-2 text-sm font-medium text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-800 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors no-print">
                                 + Upload Document
                             </button>
                         </div>

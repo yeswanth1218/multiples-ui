@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTasks } from '../../context/TaskContext';
 import {
     Plus,
     ChevronDown,
@@ -51,7 +53,8 @@ const SECTION_ICONS = {
     "Fundraising & Investor relations": DollarSign,
     "Team Leadership & Development": Award,
     "Brand Building": Megaphone,
-    "Regulatory & Compliance Adherence": Shield
+    "Regulatory & Compliance Adherence": Shield,
+    "Others": MoreHorizontal
 };
 
 const SECTIONS = [
@@ -66,18 +69,21 @@ const SECTIONS = [
     "Fundraising & Investor relations",
     "Team Leadership & Development",
     "Brand Building",
-    "Regulatory & Compliance Adherence"
+    "Regulatory & Compliance Adherence",
+    "Others"
 ];
 
 const STATUS_STYLES = {
     "In-Progress": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
     "Done": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
     "Blocked": "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
-    "Not Started": "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
+    "To Do": "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300"
 };
 
 const ActionItemsPage = () => {
+    const { tasks: items, addTask, updateTask, deleteTask } = useTasks();
     const [selectedSection, setSelectedSection] = useState(null);
+    const [statusFilter, setStatusFilter] = useState('All');
     const [expandedRows, setExpandedRows] = useState({ 2: true }); // Default expand 2nd item for demo
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubItemModalOpen, setIsSubItemModalOpen] = useState(false);
@@ -92,6 +98,7 @@ const ActionItemsPage = () => {
     const [attachmentsModalOpen, setAttachmentsModalOpen] = useState(false);
     const [activeItemForAttachments, setActiveItemForAttachments] = useState(null);
     const [activeMenuId, setActiveMenuId] = useState(null);
+    const navigate = useNavigate();
 
     const [newItemData, setNewItemData] = useState({
         section: SECTIONS[0],
@@ -107,86 +114,6 @@ const ActionItemsPage = () => {
         assignee: ''
     });
 
-    const [items, setItems] = useState([
-        {
-            id: 1,
-            date: '2025-08-09',
-            section: 'Strategy & Vision',
-            title: 'Prepare a Sector Strategy & get it approved post discussion',
-            eta: '2025-10-09',
-            status: 'Done',
-            owner: 'Shanil',
-            assignee: 'Yeswanth',
-            progress: 100,
-            subItems: [],
-            comments: [
-                { id: 1, text: "Draft needs review before approval.", user: "Shanil", date: "2025-08-10", avatar: "S" },
-                { id: 2, text: "Working on the edits.", user: "Yeswanth", date: "2025-08-11", avatar: "Y" }
-            ],
-            attachments: [
-                { id: 1, name: "Sector_Strategy_v1.pdf", size: "2.4 MB", date: "2025-08-09", type: "pdf" }
-            ]
-        },
-        {
-            id: 2,
-            date: '2025-08-09',
-            section: 'Strategy & Vision',
-            title: 'Prepare HR Strategy & Get it approved',
-            eta: '2026-03-31',
-            status: 'In-Progress',
-            owner: 'Shanil',
-            assignee: 'John',
-            progress: 50,
-            subItems: [
-                { id: 21, title: 'Filed DRFP approval is done', completed: true },
-                { id: 22, title: 'Already obtained Permission', completed: true },
-                { id: 23, title: 'Action item 2 completed', completed: true },
-                { id: 24, title: 'Final review pending', completed: false }
-            ],
-            comments: [
-                { id: 1, text: "HR team needs to be aligned.", user: "Shanil", date: "2025-08-12", avatar: "S" },
-                { id: 2, text: "Meeting scheduled for next week.", user: "John", date: "2025-08-13", avatar: "J" },
-                { id: 3, text: "Don't forget the budget report.", user: "Shanil", date: "2025-08-14", avatar: "S" },
-                { id: 4, text: "Received.", user: "John", date: "2025-08-14", avatar: "J" },
-                { id: 5, text: "Any updates?", user: "Shanil", date: "2025-08-20", avatar: "S" }
-            ],
-            attachments: [
-                { id: 1, name: "HR_Policy_Draft.docx", size: "1.2 MB", date: "2025-08-10", type: "doc" },
-                { id: 2, name: "Budget_2026.xlsx", size: "500 KB", date: "2025-08-12", type: "xls" },
-                { id: 3, name: "Meeting_Minutes.pdf", size: "1.5 MB", date: "2025-08-15", type: "pdf" }
-            ]
-        },
-        {
-            id: 3,
-            date: '2025-08-09',
-            section: 'Exit Strategy & Execution',
-            title: 'Prepare Exit Road map & discuss with board - IPO',
-            eta: '2026-03-31',
-            status: 'In-Progress',
-            owner: 'Shanil',
-            assignee: 'Jane',
-            progress: 20,
-            subItems: [],
-            comments: [
-                { id: 1, text: "Initial roadmap created.", user: "Jane", date: "2025-08-15", avatar: "J" }
-            ],
-            attachments: []
-        },
-        {
-            id: 4,
-            date: '2025-08-09',
-            section: 'Strategy & Vision',
-            title: 'Action Item 24',
-            eta: '',
-            status: 'Blocked',
-            owner: '',
-            assignee: '',
-            progress: 0,
-            subItems: [],
-            comments: [],
-            attachments: []
-        }
-    ]);
 
     const toggleExpand = (id) => {
         setExpandedRows(prev => ({
@@ -211,7 +138,6 @@ const ActionItemsPage = () => {
         if (!newItemData.title) return;
 
         const newItem = {
-            id: Date.now(),
             date: new Date().toISOString().split('T')[0],
             section: newItemData.section,
             title: newItemData.title,
@@ -220,12 +146,10 @@ const ActionItemsPage = () => {
             owner: newItemData.owner,
             assignee: newItemData.assignee,
             progress: 0,
-            subItems: [],
-            comments: [],
-            attachments: []
+            priority: 'Medium'
         };
 
-        setItems(prev => [newItem, ...prev]);
+        addTask(newItem);
         setIsModalOpen(false);
     };
 
@@ -242,26 +166,26 @@ const ActionItemsPage = () => {
     const handleSaveSubItem = () => {
         if (!newSubItemData.title || !currentParentId) return;
 
-        setItems(prevItems => prevItems.map(item => {
-            if (item.id === currentParentId) {
-                const newSub = {
-                    id: Date.now(),
-                    title: newSubItemData.title,
-                    completed: false,
-                    eta: newSubItemData.eta,
-                    assignee: newSubItemData.assignee
-                };
-                const updatedSubItems = [...item.subItems, newSub];
-                
-                // Recalculate progress
-                const total = updatedSubItems.length;
-                const completed = updatedSubItems.filter(s => s.completed).length;
-                const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+        const item = items.find(i => i.id === currentParentId);
+        if (!item) return;
 
-                return { ...item, subItems: updatedSubItems, progress };
-            }
-            return item;
-        }));
+        const newSub = {
+            id: Date.now(),
+            title: newSubItemData.title,
+            completed: false,
+            eta: newSubItemData.eta,
+            assignee: newSubItemData.assignee,
+            description: '',
+            attachments: []
+        };
+        const updatedSubItems = [...(item.subItems || []), newSub];
+        
+        // Recalculate progress
+        const total = updatedSubItems.length;
+        const completed = updatedSubItems.filter(s => s.completed).length;
+        const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+        updateTask(currentParentId, { subItems: updatedSubItems, progress });
         setIsSubItemModalOpen(false);
     };
 
@@ -275,21 +199,19 @@ const ActionItemsPage = () => {
         if (!itemToDelete) return;
 
         if (itemToDelete.type === 'item') {
-            setItems(prev => prev.filter(item => item.id !== itemToDelete.id));
+            deleteTask(itemToDelete.id);
         } else if (itemToDelete.type === 'subItem') {
-            setItems(prevItems => prevItems.map(item => {
-                if (item.id === itemToDelete.id) {
-                    const updatedSubItems = item.subItems.filter(sub => sub.id !== itemToDelete.subId);
-                    
-                    // Recalculate progress
-                    const total = updatedSubItems.length;
-                    const completed = updatedSubItems.filter(s => s.completed).length;
-                    const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+            const item = items.find(i => i.id === itemToDelete.id);
+            if (item) {
+                const updatedSubItems = item.subItems.filter(sub => sub.id !== itemToDelete.subId);
+                
+                // Recalculate progress
+                const total = updatedSubItems.length;
+                const completed = updatedSubItems.filter(s => s.completed).length;
+                const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-                    return { ...item, subItems: updatedSubItems, progress };
-                }
-                return item;
-            }));
+                updateTask(item.id, { subItems: updatedSubItems, progress });
+            }
         }
         setDeleteModalOpen(false);
         setItemToDelete(null);
@@ -312,12 +234,10 @@ const ActionItemsPage = () => {
             avatar: 'M'
         };
 
-        const updatedComments = [...activeItemForComments.comments, comment];
+        const updatedComments = [...(activeItemForComments.comments || []), comment];
         const updatedItem = { ...activeItemForComments, comments: updatedComments };
 
-        setItems(prev => prev.map(item => 
-            item.id === activeItemForComments.id ? updatedItem : item
-        ));
+        updateTask(activeItemForComments.id, { comments: updatedComments });
         
         setActiveItemForComments(updatedItem);
         setNewComment('');
@@ -342,51 +262,48 @@ const ActionItemsPage = () => {
             type: file.name.split('.').pop()
         };
 
-        const updatedAttachments = [...activeItemForAttachments.attachments, attachment];
+        const updatedAttachments = [...(activeItemForAttachments.attachments || []), attachment];
         const updatedItem = { ...activeItemForAttachments, attachments: updatedAttachments };
 
-        setItems(prev => prev.map(item => 
-            item.id === activeItemForAttachments.id ? updatedItem : item
-        ));
+        updateTask(activeItemForAttachments.id, { attachments: updatedAttachments });
         
         setActiveItemForAttachments(updatedItem);
     };
 
     const handleStatusChange = (itemId, newStatus) => {
-        setItems(prevItems => prevItems.map(item => {
-            if (item.id === itemId) {
-                return { ...item, status: newStatus };
-            }
-            return item;
-        }));
+        updateTask(itemId, { status: newStatus });
     };
 
     const toggleSubItemCompletion = (itemId, subItemId) => {
-        setItems(prevItems => prevItems.map(item => {
-            if (item.id === itemId) {
-                const updatedSubItems = item.subItems.map(sub =>
-                    sub.id === subItemId ? { ...sub, completed: !sub.completed } : sub
-                );
-                
-                // Recalculate progress
-                const total = updatedSubItems.length;
-                const completed = updatedSubItems.filter(s => s.completed).length;
-                const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
-                
-                // Update status based on progress
-                let status = item.status;
-                if (progress === 100) status = 'Done';
-                else if (progress > 0) status = 'In-Progress';
+        const item = items.find(i => i.id === itemId);
+        if (item) {
+            const updatedSubItems = item.subItems.map(sub =>
+                sub.id === subItemId ? { ...sub, completed: !sub.completed } : sub
+            );
+            
+            // Recalculate progress
+            const total = updatedSubItems.length;
+            const completed = updatedSubItems.filter(s => s.completed).length;
+            const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
+            
+            // Update status based on progress
+            let status = item.status;
+            if (progress === 100) status = 'Done';
+            else if (progress > 0 && status === 'Not Started') status = 'In-Progress';
 
-                return { ...item, subItems: updatedSubItems, progress, status };
-            }
-            return item;
-        }));
+            updateTask(itemId, { subItems: updatedSubItems, progress, status });
+        }
     };
 
-    const filteredItems = selectedSection 
-        ? items.filter(item => item.section === selectedSection)
-        : items;
+    const filteredItems = items.filter(item => {
+        const matchesSection = selectedSection ? item.section === selectedSection : true;
+        const matchesStatus = statusFilter === 'All' 
+            ? true 
+            : statusFilter === 'Overdue'
+                ? new Date(item.eta) < new Date() && item.status !== 'Done'
+                : item.status === statusFilter;
+        return matchesSection && matchesStatus;
+    });
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-10">
@@ -396,7 +313,7 @@ const ActionItemsPage = () => {
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Action Items</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage key deliverables</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 no-print">
                     <div className="relative hidden md:block">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input 
@@ -405,12 +322,21 @@ const ActionItemsPage = () => {
                             className="pl-9 pr-4 py-2 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-[#18181b] focus:outline-none focus:ring-2 focus:ring-blue-500/20 w-64"
                         />
                     </div>
-                    <button className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                        <Filter size={16} />
-                        Filter
-                    </button>
+                    <div className="relative">
+                        <select
+                            value={selectedSection || ''}
+                            onChange={(e) => setSelectedSection(e.target.value || null)}
+                            className="appearance-none pl-3 pr-8 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                        >
+                            <option value="">All Sections</option>
+                            {SECTIONS.map(section => (
+                                <option key={section} value={section}>{section}</option>
+                            ))}
+                        </select>
+                        <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                    </div>
                     <button 
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={handleAddNewItem}
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors shadow-sm"
                     >
                         <Plus size={16} />
@@ -422,14 +348,19 @@ const ActionItemsPage = () => {
             {/* Quick Stats / Overview Tiles - Glassmorphism applied */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                    { label: 'Total Items', value: items.length, icon: LayoutGrid, color: 'blue' },
-                    { label: 'In Progress', value: items.filter(i => i.status === 'In-Progress').length, icon: TrendingUp, color: 'amber' },
-                    { label: 'Completed', value: items.filter(i => i.status === 'Done').length, icon: CheckCircle, color: 'emerald' },
-                    { label: 'Overdue', value: '2', icon: AlertCircle, color: 'red' },
+                    { label: 'Total Items', value: items.length, icon: LayoutGrid, color: 'blue', filter: 'All' },
+                    { label: 'In Progress', value: items.filter(i => i.status === 'In-Progress').length, icon: TrendingUp, color: 'amber', filter: 'In-Progress' },
+                    { label: 'Completed', value: items.filter(i => i.status === 'Done').length, icon: CheckCircle, color: 'emerald', filter: 'Done' },
+                    { label: 'Overdue', value: items.filter(i => new Date(i.eta) < new Date() && i.status !== 'Done').length, icon: AlertCircle, color: 'red', filter: 'Overdue' },
                 ].map((stat, index) => (
                     <div 
                         key={index} 
-                        className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-5 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                        onClick={() => setStatusFilter(stat.filter)}
+                        className={`relative backdrop-blur-xl p-5 rounded-xl border shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group cursor-pointer ${
+                            statusFilter === stat.filter 
+                                ? `bg-${stat.color}-50 dark:bg-${stat.color}-900/20 border-${stat.color}-200 dark:border-${stat.color}-800 ring-2 ring-${stat.color}-500/20` 
+                                : 'bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 border-white/60 dark:border-white/10'
+                        }`}
                     >
                         <div className="flex items-center justify-between mb-3">
                             <div className={`p-2 rounded-lg bg-${stat.color}-50 dark:bg-${stat.color}-900/20 text-${stat.color}-600 dark:text-${stat.color}-400`}>
@@ -650,7 +581,7 @@ const ActionItemsPage = () => {
                             )}
                         </div>
 
-                        <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-[#27272a]/50">
+                        <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-[#27272a]/50 no-print">
                             <label className="flex items-center justify-center gap-2 w-full px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group">
                                 <Upload size={18} className="text-gray-400 group-hover:text-blue-500 transition-colors" />
                                 <span className="text-sm font-medium text-gray-600 dark:text-gray-300 group-hover:text-blue-500 transition-colors">Upload New File</span>
@@ -701,7 +632,7 @@ const ActionItemsPage = () => {
                                             <option>In-Progress</option>
                                             <option>Done</option>
                                             <option>Blocked</option>
-                                            <option>Not Started</option>
+                                            <option>To Do</option>
                                         </select>
                                         <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                                     </div>
@@ -788,110 +719,39 @@ const ActionItemsPage = () => {
                 </div>
             )}
 
-            {!selectedSection ? (
-                // Grid View
-                <div className="flex-1 flex flex-col overflow-hidden">
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Action Items</h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">Select a section to view tasks</p>
-                        </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 overflow-y-auto pb-4">
-                        {SECTIONS.map(section => {
-                            const count = items.filter(i => i.section === section).length;
-                            const Icon = SECTION_ICONS[section] || Folder;
-
-                            return (
-                                <button 
-                                    key={section}
-                                    onClick={() => setSelectedSection(section)}
-                                    className="p-4 text-left bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-md hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all group flex flex-col h-full"
-                                >
-                                    <div className="w-10 h-10 bg-gray-100 dark:bg-[#27272a] rounded-lg flex items-center justify-center mb-3 text-gray-900 dark:text-white transition-colors">
-                                        <Icon size={20} />
-                                    </div>
-                                    <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-2 flex-1">{section}</h3>
-                                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800/50 w-full">
-                                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                                            {count} tasks
-                                        </span>
-                                        <div className="w-6 h-6 rounded-full flex items-center justify-center text-gray-400 group-hover:text-blue-500 transition-colors">
-                                            <ChevronRight size={14} />
-                                        </div>
-                                    </div>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
-            ) : (
-                // Detail View
-                <div className="flex flex-col h-full space-y-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <button 
-                                onClick={() => setSelectedSection(null)}
-                                className="p-2 hover:bg-gray-100 dark:hover:bg-[#27272a] rounded-lg transition-colors text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white group"
-                                title="Back to Sections"
-                            >
-                                <ArrowLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
-                            </button>
-                            <div>
-                                <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-0.5">
-                                    <span className="cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors" onClick={() => setSelectedSection(null)}>Action Items</span>
-                                    <ChevronRight size={12} />
-                                    <span>Section</span>
-                                </div>
-                                <h2 className="text-xl font-bold text-gray-900 dark:text-white">{selectedSection}</h2>
-                            </div>
-                        </div>
-                        <div className="flex gap-3">
-                            <button className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#27272a] border border-gray-200 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-[#3f3f46] transition-colors text-sm font-medium">
-                                <Upload size={16} />
-                                Import
-                            </button>
-                            <button onClick={handleAddNewItem} className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors text-sm font-medium shadow-lg shadow-black/20 dark:shadow-white/10">
-                                <Plus size={16} />
-                                New Item
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="bg-gradient-to-b from-gray-100/80 to-white dark:from-[#1a1a1a] dark:to-[#0f0f0f] rounded-xl border border-gray-200/60 dark:border-white/10 shadow-sm overflow-hidden flex-1 flex flex-col">
+            <div className="flex flex-col h-full space-y-4 mt-6">
+                <div className="bg-gradient-to-b from-gray-100/80 to-white dark:from-[#1a1a1a] dark:to-[#0f0f0f] rounded-xl border border-gray-200/60 dark:border-white/10 shadow-sm overflow-hidden flex-1 flex flex-col">
                         <div className="overflow-auto flex-1">
                             <table className="w-full border-collapse min-w-[1000px]">
                                 <thead className="bg-gray-50/50 dark:bg-[#27272a]/50 sticky top-0 z-10 backdrop-blur-sm">
                                     <tr>
-                                        <th className="w-10 px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase"></th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Sno</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Date</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase w-1/3">Action Item</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">End ETA</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Owner</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Assignee</th>
-                                        <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Progress</th>
-                                        <th className="px-4 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Actions</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase w-16">Sno</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Section</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Action Item</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">ETA</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Owner</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Assignee</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Progress</th>
+                                        <th className="px-2 py-3 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase no-print">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 dark:divide-[#27272a]">
-                                    {items.filter(item => item.section === selectedSection).map((item) => (
+                                    {filteredItems.map((item) => (
                                         <React.Fragment key={item.id}>
                                             {/* Main Row */}
-                                            <tr className={`group hover:bg-gray-50/80 dark:hover:bg-[#27272a]/50 transition-colors ${expandedRows[item.id] ? 'bg-gray-50/50 dark:bg-[#27272a]/30' : ''}`}>
-                                                <td className="px-4 py-3">
-                                                    <button
-                                                        onClick={() => toggleExpand(item.id)}
-                                                        className="p-1 rounded hover:bg-gray-200 dark:hover:bg-[#3f3f46] text-gray-400 transition-colors"
-                                                    >
-                                                        {expandedRows[item.id] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                                                    </button>
+                                            <tr 
+                                                onClick={() => toggleExpand(item.id)}
+                                                className={`group cursor-pointer relative hover:shadow-lg hover:z-10 hover:bg-white dark:hover:bg-[#202022] transition-all duration-200 border-l-4 ${expandedRows[item.id] ? 'bg-gray-50/50 dark:bg-[#27272a]/30 shadow-md border-blue-500 dark:border-blue-400' : 'border-transparent'}`}
+                                            >
+                                                <td className="px-2 py-3 text-sm text-gray-500 dark:text-gray-400">{item.id}</td>
+                                                <td className="px-2 py-3 text-sm text-gray-500 dark:text-gray-400">
+                                                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 bg-white text-gray-600 shadow-sm dark:bg-[#18181b] dark:border-gray-700 dark:text-gray-300 text-xs font-medium">
+                                                        {SECTION_ICONS[item.section] && React.createElement(SECTION_ICONS[item.section], { size: 12 })}
+                                                        {item.section}
+                                                    </span>
                                                 </td>
-                                                <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{item.id}</td>
-                                                <td className="px-4 py-3 text-sm text-gray-900 dark:text-white font-medium whitespace-nowrap">{item.date}</td>
-                                                <td className="px-4 py-3 text-sm text-gray-900 dark:text-white font-medium">
+                                                <td className="px-2 py-3 text-sm text-gray-900 dark:text-white font-medium">
                                                     {item.title}
                                                     {item.subItems.length > 0 && (
                                                         <div className="mt-1 text-xs text-gray-500 flex items-center gap-2">
@@ -900,20 +760,20 @@ const ActionItemsPage = () => {
                                                         </div>
                                                     )}
                                                 </td>
-                                                <td className="px-4 py-3">
-                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[item.status] || STATUS_STYLES['Not Started']}`}>
-                                                        {item.status || 'Not Started'}
+                                                <td className="px-2 py-3">
+                                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_STYLES[item.status] || STATUS_STYLES['To Do']}`}>
+                                                        {item.status || 'To Do'}
                                                     </span>
                                                 </td>
-                                                <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                                                <td className="px-2 py-3 text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
                                                     {item.eta ? (
                                                         <div className="flex items-center gap-1.5">
                                                             <Calendar size={12} />
-                                                            {item.eta}
+                                                            {item.eta.split('-').slice(1).join('/')}
                                                         </div>
                                                     ) : '-'}
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="px-2 py-3">
                                                     {item.owner ? (
                                                         <div className="flex items-center gap-2">
                                                             <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-bold">
@@ -923,7 +783,7 @@ const ActionItemsPage = () => {
                                                         </div>
                                                     ) : '-'}
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="px-2 py-3">
                                                     {item.assignee ? (
                                                         <div className="flex items-center gap-2">
                                                             <div className="w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs font-bold">
@@ -933,7 +793,7 @@ const ActionItemsPage = () => {
                                                         </div>
                                                     ) : '-'}
                                                 </td>
-                                                <td className="px-4 py-3">
+                                                <td className="px-2 py-3">
                                                     <div className="w-24">
                                                         <div className="flex justify-between text-[10px] mb-1 text-gray-500">
                                                             <span>{item.progress}%</span>
@@ -946,31 +806,15 @@ const ActionItemsPage = () => {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-4 py-3 text-right">
+                                                <td className="px-2 py-3 text-right no-print" onClick={(e) => e.stopPropagation()}>
                                                     <div className="flex items-center justify-end gap-2">
                                                         <button 
-                                                            onClick={() => handleOpenCommentsModal(item)}
-                                                            className="p-1.5 text-gray-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors relative group/btn"
-                                                            title="Comments"
+                                                            onClick={() => navigate(`/dashboard/action-items/${item.id}`, { state: { item } })}
+                                                            className="p-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/40 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-400 rounded-lg transition-colors relative shadow-sm"
+                                                            title="Open Issue"
                                                         >
-                                                            <MessageSquare size={16} />
-                                                            {item.comments.length > 0 && (
-                                                                <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 text-white text-[8px] flex items-center justify-center rounded-full">
-                                                                    {item.comments.length}
-                                                                </span>
-                                                            )}
-                                                        </button>
-                                                        <button 
-                                                            onClick={() => handleOpenAttachmentsModal(item)}
-                                                            className="p-1.5 text-gray-400 hover:text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded transition-colors relative"
-                                                            title="Attachments"
-                                                        >
-                                                            <Paperclip size={16} />
-                                                            {item.attachments.length > 0 && (
-                                                                <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 text-white text-[8px] flex items-center justify-center rounded-full">
-                                                                    {item.attachments.length}
-                                                                </span>
-                                                            )}
+                                                            <ArrowLeft size={16} className="rotate-180" />
+                                                            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-[#18181b]"></span>
                                                         </button>
                                                         <div className="relative">
                                                             <button 
@@ -983,7 +827,7 @@ const ActionItemsPage = () => {
                                                             {activeMenuId === item.id && (
                                                                 <div className="absolute right-0 mt-1 w-48 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-20 overflow-hidden animate-in zoom-in-95 duration-100">
                                                                     <div className="px-3 py-2 text-[10px] font-semibold text-gray-400 uppercase tracking-wider bg-gray-50/50 dark:bg-[#27272a]/50">Status</div>
-                                                                    {['In-Progress', 'Done', 'Blocked', 'Not Started'].map(status => (
+                                                                    {['In-Progress', 'Done', 'Blocked', 'To Do'].map(status => (
                                                                         <button
                                                                             key={status}
                                                                             onClick={() => {
@@ -1020,66 +864,129 @@ const ActionItemsPage = () => {
                                                 </td>
                                             </tr>
 
-                                            {/* Expanded Row (Sub-checklist) */}
+                                            {/* Expanded Row (Sub-checklist & Info) */}
                                             {expandedRows[item.id] && (
                                                 <tr className="bg-gray-50/30 dark:bg-[#27272a]/20 animate-in slide-in-from-top-2 duration-200">
-                                                    <td colSpan="10" className="px-4 py-4">
-                                                        <div className="ml-14 pl-4 border-l-2 border-gray-200 dark:border-gray-700">
-                                                            <div className="flex items-center justify-between mb-3">
-                                                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
-                                                                    <CheckCircle size={14} /> Sub-Checklist
-                                                                </h4>
-                                                                <button onClick={() => handleAddSubItem(item.id)} className="text-xs text-blue-500 hover:text-blue-600 font-medium flex items-center gap-1">
-                                                                    <Plus size={12} /> Add Sub-item
-                                                                </button>
+                                                    <td colSpan="9" className="px-4 py-4">
+                                                        <div className="pl-4 border-l-2 border-gray-200 dark:border-gray-700 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                                            {/* Left: Sub-items */}
+                                                            <div className="lg:col-span-2 space-y-4">
+                                                                <div className="flex items-center justify-between">
+                                                                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                                                        <CheckCircle size={14} /> Sub-Checklist
+                                                                    </h4>
+                                                                    <button onClick={() => handleAddSubItem(item.id)} className="text-xs text-blue-500 hover:text-blue-600 font-medium flex items-center gap-1 no-print">
+                                                                        <Plus size={12} /> Add Sub-item
+                                                                    </button>
+                                                                </div>
+
+                                                                {item.subItems.length > 0 ? (
+                                                                    <div className="space-y-2">
+                                                                        {item.subItems.map((sub) => (
+                                                                            <div key={sub.id} className="flex items-center gap-3 group/sub p-2 rounded hover:bg-white dark:hover:bg-[#27272a] border border-transparent border-l-4 border-l-gray-300 dark:border-l-gray-600 hover:border-gray-100 dark:hover:border-gray-700 transition-all pl-3 bg-white/50 dark:bg-[#27272a]/30">
+                                                                                <button onClick={() => toggleSubItemCompletion(item.id, sub.id)} className={`flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-colors ${sub.completed ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark:border-gray-600 hover:border-green-500'}`}>
+                                                                                    {sub.completed && <CheckCircle size={10} fill="currentColor" />}
+                                                                                </button>
+                                                                                <span className={`text-sm ${sub.completed ? 'text-gray-400 line-through' : 'text-gray-700 dark:text-gray-300'}`}>
+                                                                                    {sub.title}
+                                                </span>
+                                                <div className="ml-auto opacity-0 group-hover/sub:opacity-100 flex items-center gap-2 no-print">
+                                                    <button className="text-xs text-gray-400 hover:text-blue-500 flex items-center gap-1">
+                                                        <FileText size={12} /> Note
+                                                    </button>
+                                                                                    <button className="text-xs text-gray-400 hover:text-purple-500 flex items-center gap-1">
+                                                                                        <Upload size={12} /> File
+                                                                                    </button>
+                                                                                    <button 
+                                                                                        onClick={() => handleOpenDeleteModal('subItem', item.id, sub.id)}
+                                                                                        className="text-xs text-gray-400 hover:text-red-500 flex items-center gap-1 ml-2"
+                                                                                    >
+                                                                                        <Trash2 size={12} /> Delete
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <div className="text-sm text-gray-400 italic py-2">No sub-items created yet. Click "Add Sub-item" to start.</div>
+                                                                )}
                                                             </div>
 
-                                                            {item.subItems.length > 0 ? (
+                                                            {/* Right: Meta Info (Date, Comments, Attachments) */}
+                                                            <div className="space-y-6">
+                                                                {/* Dates */}
                                                                 <div className="space-y-2">
-                                                                    {item.subItems.map((sub) => (
-                                                                        <div key={sub.id} className="flex items-center gap-3 group/sub p-2 rounded hover:bg-white dark:hover:bg-[#27272a] border border-transparent hover:border-gray-100 dark:hover:border-gray-700 transition-all">
-                                                                            <button onClick={() => toggleSubItemCompletion(item.id, sub.id)} className={`flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-colors ${sub.completed ? 'bg-green-500 border-green-500 text-white' : 'border-gray-300 dark:border-gray-600 hover:border-green-500'}`}>
-                                                                                {sub.completed && <CheckCircle size={10} fill="currentColor" />}
-                                                                            </button>
-                                                                            <span className={`text-sm ${sub.completed ? 'text-gray-400 line-through' : 'text-gray-700 dark:text-gray-300'}`}>
-                                                                                {sub.title}
-                                                                            </span>
-                                                                            <div className="ml-auto opacity-0 group-hover/sub:opacity-100 flex items-center gap-2">
-                                                                                <button className="text-xs text-gray-400 hover:text-blue-500 flex items-center gap-1">
-                                                                                    <FileText size={12} /> Note
-                                                                                </button>
-                                                                                <button className="text-xs text-gray-400 hover:text-purple-500 flex items-center gap-1">
-                                                                                    <Upload size={12} /> File
-                                                                                </button>
-                                                                                <button 
-                                                                                    onClick={() => handleOpenDeleteModal('subItem', item.id, sub.id)}
-                                                                                    className="text-xs text-gray-400 hover:text-red-500 flex items-center gap-1 ml-2"
-                                                                                >
-                                                                                    <Trash2 size={12} /> Delete
-                                                                                </button>
-                                                                            </div>
+                                                                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                                                        <Calendar size={14} /> Dates
+                                                                    </h4>
+                                                                    <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-[#27272a] p-2 rounded border border-gray-100 dark:border-gray-800">
+                                                                        <span className="text-gray-500 text-xs uppercase w-16">Created:</span>
+                                                                        <span className="font-medium">{item.date}</span>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-[#27272a] p-2 rounded border border-gray-100 dark:border-gray-800">
+                                                                        <span className="text-gray-500 text-xs uppercase w-16">Due:</span>
+                                                                        <span className="font-medium">{item.eta || 'Not set'}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Comments Preview */}
+                                                                <div className="space-y-2">
+                                                                    <div className="flex items-center justify-between">
+                                                                        <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                                                        <MessageSquare size={14} /> Comments
+                                                                    </h4>
+                                                                    <button onClick={() => handleOpenCommentsModal(item)} className="text-xs text-blue-500 hover:underline no-print">
+                                                                        View All ({item.comments.length})
+                                                                    </button>
+                                                                </div>
+                                                                    {item.comments.length > 0 ? (
+                                                                        <div className="bg-white dark:bg-[#27272a] p-3 rounded border border-gray-100 dark:border-gray-800 space-y-2">
+                                                                            {item.comments.slice(0, 2).map(c => (
+                                                                                <div key={c.id} className="text-xs">
+                                                                                    <div className="flex justify-between text-gray-500 mb-0.5">
+                                                                                        <span className="font-medium">{c.user}</span>
+                                                                                        <span>{c.date}</span>
+                                                                                    </div>
+                                                                                    <p className="text-gray-700 dark:text-gray-300 line-clamp-2">{c.text}</p>
+                                                                                </div>
+                                                                            ))}
+                                                                            {item.comments.length > 2 && (
+                                                                                <div className="text-xs text-gray-400 italic text-center pt-1">
+                                                                                    +{item.comments.length - 2} more...
+                                                                                </div>
+                                                                            )}
                                                                         </div>
-                                                                    ))}
+                                                                    ) : (
+                                                                        <div className="text-xs text-gray-400 italic bg-white dark:bg-[#27272a] p-2 rounded border border-gray-100 dark:border-gray-800">
+                                                                            No comments yet.
+                                                                        </div>
+                                                                    )}
                                                                 </div>
-                                                            ) : (
-                                                                <div className="text-sm text-gray-400 italic py-2">No sub-items created yet. Click "Add Sub-item" to start.</div>
-                                                            )}
-                                                            
-                                                            {/* Quick Actions for Item */}
-                                                            <div className="mt-4 flex gap-4 pt-4 border-t border-gray-100 dark:border-gray-800/50">
-                                                                <div className="flex flex-col gap-1">
-                                                                    <span className="text-[10px] text-gray-400 font-medium uppercase">Ownership</span>
-                                                                    <div className="flex items-center gap-2 cursor-pointer hover:bg-white dark:hover:bg-[#27272a] p-1 rounded transition-colors">
-                                                                        <div className="w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">S</div>
-                                                                        <span className="text-xs text-gray-600 dark:text-gray-300">Shanil</span>
-                                                                    </div>
+
+                                                                {/* Attachments Preview */}
+                                                                <div className="space-y-2">
+                                                                    <div className="flex items-center justify-between">
+                                                                        <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                                                        <Paperclip size={14} /> Attachments
+                                                                    </h4>
+                                                                    <button onClick={() => handleOpenAttachmentsModal(item)} className="text-xs text-blue-500 hover:underline no-print">
+                                                                        View All ({item.attachments.length})
+                                                                    </button>
                                                                 </div>
-                                                                <div className="flex flex-col gap-1">
-                                                                    <span className="text-[10px] text-gray-400 font-medium uppercase">Due Date</span>
-                                                                    <div className="flex items-center gap-2 cursor-pointer hover:bg-white dark:hover:bg-[#27272a] p-1 rounded transition-colors">
-                                                                        <Calendar size={14} className="text-gray-400" />
-                                                                        <span className="text-xs text-gray-600 dark:text-gray-300">{item.eta || 'Set Date'}</span>
-                                                                    </div>
+                                                                    {item.attachments.length > 0 ? (
+                                                                        <div className="space-y-1">
+                                                                            {item.attachments.slice(0, 2).map(file => (
+                                                                                <div key={file.id} className="flex items-center gap-2 bg-white dark:bg-[#27272a] p-2 rounded border border-gray-100 dark:border-gray-800">
+                                                                                    <FileText size={12} className="text-gray-400" />
+                                                                                    <span className="text-xs text-gray-700 dark:text-gray-300 truncate flex-1">{file.name}</span>
+                                                                                </div>
+                                                                            ))}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className="text-xs text-gray-400 italic bg-white dark:bg-[#27272a] p-2 rounded border border-gray-100 dark:border-gray-800">
+                                                                            No attachments.
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1093,7 +1000,6 @@ const ActionItemsPage = () => {
                         </div>
                     </div>
                 </div>
-            )}
         </div>
     );
 };

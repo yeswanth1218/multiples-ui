@@ -14,6 +14,7 @@ import EmailsPage from './pages/dashboard/EmailsPage';
 import SchedulePage from './pages/dashboard/SchedulePage';
 import TeamPage from './pages/dashboard/TeamPage';
 import ActionItemsPage from './pages/dashboard/ActionItemsPage';
+import ActionItemDetailPage from './pages/dashboard/ActionItemDetailPage';
 
 // Chart and table data for OverviewPage
 const chartData = [
@@ -50,6 +51,7 @@ export default function App() {
           <Route path="company/:companyId" element={<CompanyPage />} />
           <Route path="overview" element={<OverviewPage chartData={chartData} tableData={tableData} />} />
           <Route path="action-items" element={<ActionItemsPage />} />
+          <Route path="action-items/:itemId" element={<ActionItemDetailPage />} />
           <Route path="analytics" element={<AnalyticsPage />} />
           <Route path="workflow" element={<WorkflowPage />} />
           

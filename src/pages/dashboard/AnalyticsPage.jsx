@@ -72,11 +72,11 @@ const AnalyticsPage = () => {
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Portfolio Analytics</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Comprehensive view of investment performance</p>
-                </div>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
-                    Download Report
-                </button>
             </div>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium no-print">
+                Download Report
+            </button>
+        </div>
 
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
