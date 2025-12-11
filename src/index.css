@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    body {
+        @apply bg-gray-50 text-gray-900 dark:bg-brand-dark dark:text-white transition-colors duration-300;
+    }
+}
+
 @media print {
     @page {
         margin: 0.5cm;
@@ -9,32 +15,32 @@
     }
 
     /* Hide Sidebar and Navbar */
-    aside, 
+    aside,
     header,
     .no-print {
         display: none !important;
     }
 
     /* Reset layout constraints */
-            body, 
-            #root, 
-            main,
-            div[class*="flex h-screen"],
-            div[class*="overflow-y-auto"],
-            div[class*="overflow-x-auto"],
-            div[class*="overflow-auto"] {
-                display: block !important;
-                height: auto !important;
-                width: 100% !important;
-                overflow: visible !important;
-                position: static !important;
-                min-width: 0 !important;
-            }
-            
-            table {
-                min-width: 0 !important;
-                width: 100% !important;
-            }
+    body,
+    #root,
+    main,
+    div[class*="flex h-screen"],
+    div[class*="overflow-y-auto"],
+    div[class*="overflow-x-auto"],
+    div[class*="overflow-auto"] {
+        display: block !important;
+        height: auto !important;
+        width: 100% !important;
+        overflow: visible !important;
+        position: static !important;
+        min-width: 0 !important;
+    }
+
+    table {
+        min-width: 0 !important;
+        width: 100% !important;
+    }
 
     /* Remove background colors for ink saving and clarity */
     body {
@@ -47,8 +53,8 @@
         padding: 0 !important;
         margin: 0 !important;
     }
-    
-    main > div {
+
+    main>div {
         padding: 0 !important;
     }
 
@@ -57,13 +63,13 @@
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
-    
+
     /* Specific overrides for dark/* Dark mode overrides */
     .dark {
         color: black !important;
         background-color: white !important;
     }
-    
+
     /* Utility to hide elements in print */
     .no-print {
         display: none !important;
@@ -74,23 +80,24 @@
         overflow: visible !important;
         width: 100% !important;
     }
-    
+
     .workflow-container {
         display: block !important;
         width: 100% !important;
         min-width: 0 !important;
         height: auto !important;
     }
-    
+
     .workflow-column {
         width: 100% !important;
         margin-bottom: 20px !important;
         break-inside: avoid !important;
-    }    
+    }
+
     .dark .text-white {
         color: black !important;
     }
-    
+
     .dark .bg-black {
         background-color: #eee !important;
         color: black !important;
@@ -105,12 +112,12 @@
     .grid {
         display: block !important;
     }
-    
-    .grid > div {
+
+    .grid>div {
         margin-bottom: 20px;
         page-break-inside: avoid;
     }
-    
+
     /* Flex containers that should wrap or stack */
     .flex-wrap {
         flex-wrap: wrap !important;
@@ -120,7 +127,7 @@
     thead {
         display: table-header-group;
     }
-    
+
     tr {
         page-break-inside: avoid;
     }

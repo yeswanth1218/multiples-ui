@@ -22,7 +22,7 @@ const NotesPage = () => {
 
     const handleLinkNote = (taskId) => {
         if (!currentNote) return;
-        
+
         const isLinked = currentNote.linkedTaskIds?.includes(taskId);
         if (isLinked) {
             unlinkNoteFromTask(currentNote.id, taskId);
@@ -43,7 +43,7 @@ const NotesPage = () => {
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Notes</h2>
                     <span className="text-sm text-gray-500 dark:text-gray-400">Your personal scratchpad</span>
                 </div>
-                <button 
+                <button
                     onClick={() => setIsModalOpen(true)}
                     className="bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-opacity"
                 >
@@ -53,11 +53,11 @@ const NotesPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {notes.map((note) => (
-                    <div key={note.id} className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-sm hover:shadow-md transition-all duration-300 group flex flex-col h-64">
-                         <div className="flex justify-between items-start mb-4">
+                    <div key={note.id} className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-sm dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)] hover:shadow-md transition-all duration-300 group flex flex-col h-64">
+                        <div className="flex justify-between items-start mb-4">
                             <h3 className="font-bold text-gray-900 dark:text-gray-100 text-lg truncate pr-2">{note.title}</h3>
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button 
+                                <button
                                     onClick={() => openLinkModal(note)}
                                     className="p-1.5 text-gray-500 hover:text-blue-500 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                     title="Link to Action Item"
@@ -103,13 +103,13 @@ const NotesPage = () => {
                                 type="text"
                                 placeholder="Note Title"
                                 value={newNoteData.title}
-                                onChange={(e) => setNewNoteData({...newNoteData, title: e.target.value})}
+                                onChange={(e) => setNewNoteData({ ...newNoteData, title: e.target.value })}
                                 className="w-full text-lg font-bold bg-transparent border-b border-gray-200 dark:border-gray-700 pb-2 focus:outline-none focus:border-blue-500 text-gray-900 dark:text-white"
                             />
                             <textarea
                                 placeholder="Start typing..."
                                 value={newNoteData.content}
-                                onChange={(e) => setNewNoteData({...newNoteData, content: e.target.value})}
+                                onChange={(e) => setNewNoteData({ ...newNoteData, content: e.target.value })}
                                 rows={10}
                                 className="w-full bg-transparent resize-none focus:outline-none text-gray-700 dark:text-gray-300"
                             />
@@ -140,7 +140,7 @@ const NotesPage = () => {
                             {tasks.map(task => {
                                 const isLinked = currentNote?.linkedTaskIds?.includes(task.id);
                                 return (
-                                    <button 
+                                    <button
                                         key={task.id}
                                         onClick={() => handleLinkNote(task.id)}
                                         className={`w-full text-left p-3 rounded-lg border transition-all flex items-center justify-between ${isLinked ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-gray-50 dark:bg-[#27272a] border-transparent hover:border-gray-200 dark:hover:border-gray-600'}`}

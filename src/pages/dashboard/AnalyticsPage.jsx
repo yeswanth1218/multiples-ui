@@ -1,28 +1,28 @@
 import React from 'react';
-import { 
-    PieChart, 
-    Pie, 
-    Cell, 
-    AreaChart, 
-    Area, 
-    XAxis, 
-    YAxis, 
-    CartesianGrid, 
-    Tooltip, 
+import {
+    PieChart,
+    Pie,
+    Cell,
+    AreaChart,
+    Area,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
     ResponsiveContainer,
     BarChart,
     Bar,
     Legend
 } from 'recharts';
-import { 
-    DollarSign, 
-    Briefcase, 
-    TrendingUp, 
-    Activity 
+import {
+    DollarSign,
+    Briefcase,
+    TrendingUp,
+    Activity
 } from 'lucide-react';
 
 const AnalyticsPage = () => {
-    
+
     // Dummy Data for Key Metrics
     const keyMetrics = [
         { title: 'Total Invested', value: '$450M', icon: DollarSign, change: '+12% YoY', color: 'bg-slate-900' },
@@ -72,18 +72,18 @@ const AnalyticsPage = () => {
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Portfolio Analytics</h2>
                     <p className="text-sm text-gray-500 dark:text-gray-400">Comprehensive view of investment performance</p>
+                </div>
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium no-print">
+                    Download Report
+                </button>
             </div>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium no-print">
-                Download Report
-            </button>
-        </div>
 
             {/* Key Metrics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {keyMetrics.map((metric, index) => (
-                    <div 
-                        key={index} 
-                        className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.3)] transition-all duration-300 group"
+                    <div
+                        key={index}
+                        className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(31,38,135,0.15)] dark:hover:shadow-[0_4px_8px_rgba(0,0,0,0.4),0_8px_20px_rgba(0,0,0,0.5),0_16px_32px_rgba(0,0,0,0.4)] transition-all duration-300 group"
                     >
                         <div className="flex items-center justify-between mb-4">
                             <div className={`p-3 rounded-lg ${metric.color} bg-opacity-10 text-white`}>
@@ -102,25 +102,25 @@ const AnalyticsPage = () => {
             {/* Charts Row 1 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Investment vs Valuation Growth */}
-                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Portfolio Growth (USD Millions)</h3>
                     <div className="h-80 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={investmentGrowthData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorValuation" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1}/>
-                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
                                     </linearGradient>
                                     <linearGradient id="colorInvested" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#0f172a" stopOpacity={0.1}/>
-                                        <stop offset="95%" stopColor="#0f172a" stopOpacity={0}/>
+                                        <stop offset="5%" stopColor="#0f172a" stopOpacity={0.1} />
+                                        <stop offset="95%" stopColor="#0f172a" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#9ca3af'}} />
-                                <YAxis axisLine={false} tickLine={false} tick={{fill: '#9ca3af'}} />
+                                <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af' }} />
+                                <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af' }} />
                                 <CartesianGrid vertical={false} stroke="#e5e7eb" strokeDasharray="3 3" />
-                                <Tooltip 
+                                <Tooltip
                                     contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
                                 />
                                 <Legend iconType="circle" />
@@ -132,7 +132,7 @@ const AnalyticsPage = () => {
                 </div>
 
                 {/* Sector Allocation */}
-                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Sector Allocation</h3>
                     <div className="h-80 w-full flex items-center justify-center">
                         <ResponsiveContainer width="100%" height="100%">
@@ -161,14 +161,14 @@ const AnalyticsPage = () => {
             {/* Charts Row 2 & Table */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Stage Distribution */}
-                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                <div className="relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Portfolio by Stage</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={stageData} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
                                 <XAxis type="number" hide />
-                                <YAxis dataKey="stage" type="category" width={80} tickLine={false} axisLine={false} tick={{fill: '#6b7280', fontSize: 12}} />
-                                <Tooltip cursor={{fill: 'transparent'}} />
+                                <YAxis dataKey="stage" type="category" width={80} tickLine={false} axisLine={false} tick={{ fill: '#6b7280', fontSize: 12 }} />
+                                <Tooltip cursor={{ fill: 'transparent' }} />
                                 <Bar dataKey="count" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={30} />
                             </BarChart>
                         </ResponsiveContainer>
@@ -176,7 +176,7 @@ const AnalyticsPage = () => {
                 </div>
 
                 {/* Top Performers Table */}
-                <div className="lg:col-span-2 relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:from-gray-800/90 dark:via-gray-800/60 dark:to-gray-800/30 backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)]">
+                <div className="lg:col-span-2 relative bg-gradient-to-br from-white/90 via-white/60 to-white/30 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] backdrop-blur-xl p-6 rounded-xl border border-white/60 dark:border-white/10 shadow-[0_8px_32px_rgba(31,38,135,0.10)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Top Performing Assets</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">

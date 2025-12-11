@@ -15,19 +15,19 @@ export default function LoginPage() {
     };
 
     return (
-        <div className={`min-h-screen w-full flex items-center justify-center p-4 transition-colors duration-500 ${isDarkMode ? 'bg-[#0a0a0a] text-white' : 'bg-gray-100 text-gray-900'}`}>
+        <div className={`min-h-screen w-full flex items-center justify-center p-4 transition-colors duration-500 ${isDarkMode ? 'bg-brand-dark text-white' : 'bg-gray-100 text-gray-900'}`}>
 
             {/* Theme Toggle */}
             <button
                 onClick={toggleTheme}
-                className={`absolute top-6 right-6 p-3 rounded-full shadow-lg transition-all ${isDarkMode ? 'bg-zinc-800 text-yellow-400 hover:bg-zinc-700' : 'bg-white text-orange-500 hover:bg-gray-50'}`}
+                className={`absolute top-6 right-6 p-3 rounded-full shadow-lg transition-all ${isDarkMode ? 'bg-brand-muted/20 text-yellow-400 hover:bg-brand-muted/30' : 'bg-white text-brand-primary hover:bg-gray-50'}`}
                 title="Toggle Theme"
             >
                 {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
             </button>
 
             {/* Main Card Container */}
-            <div className={`w-full max-w-[1100px] h-auto md:h-[700px] grid grid-cols-1 md:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 ${isDarkMode ? 'bg-gradient-to-b from-[#1a1a1a] to-[#0a0a0a] border border-white/10 shadow-black/50' : 'bg-white shadow-gray-200'}`}>
+            <div className={`w-full max-w-[1100px] h-auto md:h-[700px] grid grid-cols-1 md:grid-cols-2 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 ${isDarkMode ? 'bg-gradient-to-b from-brand-dark to-brand-dark/90 border border-brand-muted/10 shadow-black/50' : 'bg-white shadow-gray-200'}`}>
 
                 {/* Left Side - Visual/Image */}
                 <div className={`relative hidden md:flex flex-col items-center justify-center p-8 overflow-hidden transition-colors duration-500 ${isDarkMode ? 'bg-transparent' : 'bg-white'}`}>
@@ -47,18 +47,18 @@ export default function LoginPage() {
                         <h1 className={`text-3xl font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                             Welcome Back
                         </h1>
-                        <p className={`text-sm ${isDarkMode ? 'text-zinc-500' : 'text-slate-500'}`}>
+                        <p className={`text-sm ${isDarkMode ? 'text-brand-muted' : 'text-slate-500'}`}>
                             Please, {activeTab === 'signin' ? 'Sign In to' : 'Create'} your account
                         </p>
                     </div>
 
                     {/* Tabs (Sign In / Sign Up) */}
-                    <div className={`w-full p-1.5 rounded-2xl mb-8 flex transition-colors duration-300 ${isDarkMode ? 'bg-black/40 border border-white/5' : 'bg-gray-100'}`}>
+                    <div className={`w-full p-1.5 rounded-2xl mb-8 flex transition-colors duration-300 ${isDarkMode ? 'bg-black/40 border border-brand-muted/10' : 'bg-gray-100'}`}>
                         <button
                             onClick={() => setActiveTab('signin')}
                             className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeTab === 'signin'
-                                ? (isDarkMode ? 'bg-gradient-to-b from-[#333] to-[#222] border-t border-white/10 text-white shadow-lg shadow-black/20' : 'bg-white text-slate-900 shadow-sm')
-                                : (isDarkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-700')
+                                ? (isDarkMode ? 'bg-gradient-to-b from-brand-muted/20 to-brand-muted/10 border-t border-brand-muted/10 text-white shadow-lg shadow-black/20' : 'bg-white text-slate-900 shadow-sm')
+                                : (isDarkMode ? 'text-brand-muted hover:text-white' : 'text-slate-500 hover:text-slate-700')
                                 }`}
                         >
                             Sign In
@@ -66,8 +66,8 @@ export default function LoginPage() {
                         <button
                             onClick={() => setActiveTab('signup')}
                             className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeTab === 'signup'
-                                ? (isDarkMode ? 'bg-gradient-to-b from-[#333] to-[#222] border-t border-white/10 text-white shadow-lg shadow-black/20' : 'bg-white text-slate-900 shadow-sm')
-                                : (isDarkMode ? 'text-zinc-500 hover:text-zinc-300' : 'text-slate-500 hover:text-slate-700')
+                                ? (isDarkMode ? 'bg-gradient-to-b from-brand-muted/20 to-brand-muted/10 border-t border-brand-muted/10 text-white shadow-lg shadow-black/20' : 'bg-white text-slate-900 shadow-sm')
+                                : (isDarkMode ? 'text-brand-muted hover:text-white' : 'text-slate-500 hover:text-slate-700')
                                 }`}
                         >
                             Sign Up
@@ -79,18 +79,18 @@ export default function LoginPage() {
                         {/* Email Field */}
                         <div className="group">
                             <div className={`relative flex items-center w-full h-14 rounded-2xl border transition-all duration-300 ${isDarkMode
-                                ? 'bg-[#111] border-white/5 focus-within:border-white/10 focus-within:bg-[#161616]'
+                                ? 'bg-brand-dark/50 border-brand-muted/10 focus-within:border-brand-muted/30 focus-within:bg-brand-dark/80'
                                 : 'bg-white border-gray-200 focus-within:border-gray-300 focus-within:shadow-sm'
                                 }`}>
-                                <div className={`pl-5 pr-3 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>
+                                <div className={`pl-5 pr-3 ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>
                                     <Mail size={20} />
                                 </div>
                                 <div className="flex-1 flex flex-col justify-center h-full">
-                                    <span className={`text-[10px] font-medium mb-[-2px] ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Email Address</span>
+                                    <span className={`text-[10px] font-medium mb-[-2px] ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>Email Address</span>
                                     <input
                                         type="email"
                                         defaultValue="info@multiples.global"
-                                        className={`w-full bg-transparent border-none outline-none text-sm font-medium h-6 p-0 focus:ring-0 ${isDarkMode ? 'text-white placeholder-zinc-600' : 'text-slate-900 placeholder-slate-400'}`}
+                                        className={`w-full bg-transparent border-none outline-none text-sm font-medium h-6 p-0 focus:ring-0 ${isDarkMode ? 'text-white placeholder-brand-muted' : 'text-slate-900 placeholder-slate-400'}`}
                                     />
                                 </div>
                                 <div className="pr-5 pl-2">
@@ -104,20 +104,20 @@ export default function LoginPage() {
                         {/* Password Field (Only shows in signup) */}
                         {activeTab === 'signup' && (
                             <div className={`relative flex items-center w-full h-14 rounded-2xl border transition-all duration-300 ${isDarkMode
-                                ? 'bg-[#111] border-white/5 focus-within:border-white/10 focus-within:bg-[#161616]'
+                                ? 'bg-brand-dark/50 border-brand-muted/10 focus-within:border-brand-muted/30 focus-within:bg-brand-dark/80'
                                 : 'bg-white border-gray-200 focus-within:border-gray-300 focus-within:shadow-sm'
                                 }`}>
-                                <div className={`pl-5 pr-3 ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>
+                                <div className={`pl-5 pr-3 ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>
                                     <div className="w-5 h-5 border-2 border-current rounded-md flex items-center justify-center">
                                         <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
                                     </div>
                                 </div>
                                 <div className="flex-1 flex flex-col justify-center h-full">
-                                    <span className={`text-[10px] font-medium mb-[-2px] ${isDarkMode ? 'text-zinc-500' : 'text-slate-400'}`}>Password</span>
+                                    <span className={`text-[10px] font-medium mb-[-2px] ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>Password</span>
                                     <input
                                         type="password"
                                         placeholder="••••••••"
-                                        className={`w-full bg-transparent border-none outline-none text-sm font-medium h-6 p-0 focus:ring-0 ${isDarkMode ? 'text-white placeholder-zinc-600' : 'text-slate-900 placeholder-slate-400'}`}
+                                        className={`w-full bg-transparent border-none outline-none text-sm font-medium h-6 p-0 focus:ring-0 ${isDarkMode ? 'text-white placeholder-brand-muted' : 'text-slate-900 placeholder-slate-400'}`}
                                     />
                                 </div>
                             </div>
@@ -129,7 +129,7 @@ export default function LoginPage() {
                         onClick={handleContinue}
                         className={`w-full h-14 rounded-full flex items-center justify-center gap-3 font-semibold text-sm transition-transform active:scale-[0.98] ${isDarkMode
                             ? 'bg-white text-black hover:bg-gray-100'
-                            : 'bg-[#1a1a1a] text-white hover:bg-black'
+                            : 'bg-brand-primary text-white hover:bg-brand-primary/90'
                             }`}
                     >
                         <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${isDarkMode ? 'border-black' : 'border-white'
@@ -143,16 +143,16 @@ export default function LoginPage() {
 
                     {/* Divider */}
                     <div className="w-full flex items-center gap-4 my-8">
-                        <div className={`flex-1 h-[1px] ${isDarkMode ? 'bg-zinc-800' : 'bg-gray-200'}`}></div>
-                        <span className={`text-xs font-medium ${isDarkMode ? 'text-zinc-600' : 'text-slate-400'}`}>Or continue with</span>
-                        <div className={`flex-1 h-[1px] ${isDarkMode ? 'bg-zinc-800' : 'bg-gray-200'}`}></div>
+                        <div className={`flex-1 h-[1px] ${isDarkMode ? 'bg-brand-muted/20' : 'bg-gray-200'}`}></div>
+                        <span className={`text-xs font-medium ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>Or continue with</span>
+                        <div className={`flex-1 h-[1px] ${isDarkMode ? 'bg-brand-muted/20' : 'bg-gray-200'}`}></div>
                     </div>
 
                     {/* Social Buttons */}
                     <div className="flex gap-4 mb-12">
                         {/* Google */}
                         <button className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isDarkMode
-                            ? 'bg-gradient-to-b from-[#222] to-[#111] border border-white/5 hover:border-white/10 text-white shadow-lg'
+                            ? 'bg-gradient-to-b from-brand-muted/20 to-brand-muted/10 border border-brand-muted/10 hover:border-brand-muted/20 text-white shadow-lg'
                             : 'bg-white border border-gray-200 hover:bg-gray-50 text-slate-800'
                             }`}>
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -165,7 +165,7 @@ export default function LoginPage() {
 
                         {/* Apple */}
                         <button className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isDarkMode
-                            ? 'bg-gradient-to-b from-[#222] to-[#111] border border-white/5 hover:border-white/10 text-white shadow-lg'
+                            ? 'bg-gradient-to-b from-brand-muted/20 to-brand-muted/10 border border-brand-muted/10 hover:border-brand-muted/20 text-white shadow-lg'
                             : 'bg-white border border-gray-200 hover:bg-gray-50 text-black'
                             }`}>
                             <Apple size={22} fill="currentColor" />
@@ -173,7 +173,7 @@ export default function LoginPage() {
 
                         {/* Edge/Browser */}
                         <button className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${isDarkMode
-                            ? 'bg-gradient-to-b from-[#222] to-[#111] border border-white/5 hover:border-white/10 text-white shadow-lg'
+                            ? 'bg-gradient-to-b from-brand-muted/20 to-brand-muted/10 border border-brand-muted/10 hover:border-brand-muted/20 text-white shadow-lg'
                             : 'bg-white border border-gray-200 hover:bg-gray-50 text-slate-800'
                             }`}>
                             <Globe size={22} />
@@ -182,7 +182,7 @@ export default function LoginPage() {
 
                     {/* Footer */}
                     <div className="absolute bottom-6 md:bottom-8 text-center">
-                        <p className={`text-[10px] ${isDarkMode ? 'text-zinc-600' : 'text-slate-400'}`}>
+                        <p className={`text-[10px] ${isDarkMode ? 'text-brand-muted' : 'text-slate-400'}`}>
                             By continuing, you agree with Multiples LLC <a href="#" className="underline hover:text-current">Privacy Policy</a>
                         </p>
                     </div>

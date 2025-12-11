@@ -1,23 +1,23 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { 
-    BarChart, 
-    Bar, 
-    XAxis, 
-    YAxis, 
-    CartesianGrid, 
-    Tooltip, 
-    ResponsiveContainer 
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer
 } from 'recharts';
-import { 
-    ArrowLeft, 
-    TrendingUp, 
-    DollarSign, 
-    Calendar, 
-    Users, 
-    FileText, 
-    Activity, 
-    Mail, 
+import {
+    ArrowLeft,
+    TrendingUp,
+    DollarSign,
+    Calendar,
+    Users,
+    FileText,
+    Activity,
+    Mail,
     Phone,
     Globe,
     PieChart,
@@ -129,7 +129,7 @@ const CompanyPage = () => {
         <div className="space-y-6 animate-in fade-in duration-500 pb-10">
             {/* Header / Navigation */}
             <div className="flex items-center gap-4 mb-6">
-                <button 
+                <button
                     onClick={() => navigate(-1)}
                     className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors no-print"
                 >
@@ -138,12 +138,12 @@ const CompanyPage = () => {
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                         {companyData.name}
-                        <span className="text-sm px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-900/50 font-medium">
+                        <span className="text-sm px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-white border border-brand-primary/20 dark:border-brand-primary/30 font-medium">
                             Active Portfolio
                         </span>
                     </h1>
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mt-1">
-                        <span className="flex items-center gap-1"><Globe size={14}/> {companyData.website}</span>
+                        <span className="flex items-center gap-1"><Globe size={14} /> {companyData.website}</span>
                         <span>•</span>
                         <span>Founded {companyData.founded}</span>
                         <span>•</span>
@@ -154,11 +154,11 @@ const CompanyPage = () => {
 
             {/* Main Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* Left Column - Overview & Investment */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* About */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">About</h3>
                         <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                             {companyData.description}
@@ -167,26 +167,26 @@ const CompanyPage = () => {
 
                     {/* Investment Stats */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="bg-blue-50 dark:bg-blue-900/10 p-5 rounded-xl border border-blue-100 dark:border-blue-900/30">
-                            <div className="text-blue-600 dark:text-blue-400 mb-2"><DollarSign size={24} /></div>
+                        <div className="bg-brand-secondary/10 dark:bg-brand-secondary/10 p-5 rounded-xl border border-brand-secondary/20 dark:border-brand-secondary/20">
+                            <div className="text-brand-secondary dark:text-brand-secondary mb-2"><DollarSign size={24} /></div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">Total Invested</div>
                             <div className="text-2xl font-bold text-gray-900 dark:text-white">{companyData.investment.totalInvested}</div>
                         </div>
-                        <div className="bg-purple-50 dark:bg-purple-900/10 p-5 rounded-xl border border-purple-100 dark:border-purple-900/30">
-                            <div className="text-purple-600 dark:text-purple-400 mb-2"><PieChart size={24} /></div>
+                        <div className="bg-brand-secondary/10 dark:bg-brand-secondary/10 p-5 rounded-xl border border-brand-secondary/20 dark:border-brand-secondary/20">
+                            <div className="text-brand-secondary dark:text-brand-secondary mb-2"><PieChart size={24} /></div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">Equity Owned</div>
                             <div className="text-2xl font-bold text-gray-900 dark:text-white">{companyData.investment.equity}</div>
                         </div>
-                        <div className="bg-green-50 dark:bg-green-900/10 p-5 rounded-xl border border-green-100 dark:border-green-900/30">
-                            <div className="text-green-600 dark:text-green-400 mb-2"><TrendingUp size={24} /></div>
+                        <div className="bg-brand-secondary/10 dark:bg-brand-secondary/10 p-5 rounded-xl border border-brand-secondary/20 dark:border-brand-secondary/20">
+                            <div className="text-brand-secondary dark:text-brand-secondary mb-2"><TrendingUp size={24} /></div>
                             <div className="text-sm text-gray-500 dark:text-gray-400">Current Value</div>
                             <div className="text-2xl font-bold text-gray-900 dark:text-white">{companyData.investment.currentValuation}</div>
-                            <div className="text-xs text-green-600 dark:text-green-400 font-medium">+{companyData.investment.multiple} ROI</div>
+                            <div className="text-xs text-brand-secondary dark:text-brand-secondary font-medium">+{companyData.investment.multiple} ROI</div>
                         </div>
                     </div>
 
                     {/* Recent Advancements */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                             <Activity size={20} /> Recent Advancements
                         </h3>
@@ -210,39 +210,39 @@ const CompanyPage = () => {
                     </div>
 
                     {/* Revenue Chart */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Revenue Growth</h3>
                         <div className="h-64 w-full">
                             <ResponsiveContainer width="100%" height="100%">
                                 <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
-                                    <XAxis 
-                                        dataKey="year" 
-                                        axisLine={false} 
-                                        tickLine={false} 
-                                        tick={{ fill: '#6b7280', fontSize: 12 }} 
+                                    <XAxis
+                                        dataKey="year"
+                                        axisLine={false}
+                                        tickLine={false}
+                                        tick={{ fill: '#6b7280', fontSize: 12 }}
                                         dy={10}
                                     />
-                                    <YAxis 
-                                        axisLine={false} 
-                                        tickLine={false} 
+                                    <YAxis
+                                        axisLine={false}
+                                        tickLine={false}
                                         tick={{ fill: '#6b7280', fontSize: 12 }}
                                         tickFormatter={(value) => `$${value}M`}
                                     />
-                                    <Tooltip 
+                                    <Tooltip
                                         cursor={{ fill: 'transparent' }}
-                                        contentStyle={{ 
-                                            backgroundColor: '#fff', 
-                                            borderRadius: '8px', 
+                                        contentStyle={{
+                                            backgroundColor: '#fff',
+                                            borderRadius: '8px',
                                             border: '1px solid #e5e7eb',
-                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' 
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
                                         }}
                                         formatter={(value) => [`$${value}M`, 'Revenue']}
                                     />
-                                    <Bar 
-                                        dataKey="value" 
-                                        fill="#3b82f6" 
-                                        radius={[4, 4, 0, 0]} 
+                                    <Bar
+                                        dataKey="value"
+                                        fill="#FF0000"
+                                        radius={[4, 4, 0, 0]}
                                         barSize={40}
                                     />
                                 </BarChart>
@@ -251,19 +251,18 @@ const CompanyPage = () => {
                     </div>
 
                     {/* Previous Interactions */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                             <MessageSquare size={20} /> Previous Interactions
                         </h3>
                         <div className="space-y-4">
                             {companyData.interactions.map((interaction) => (
-                                <div key={interaction.id} className="flex gap-4 p-4 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
-                                        interaction.type === 'Meeting' ? 'bg-purple-100 text-purple-600' : 
-                                        interaction.type === 'Email' ? 'bg-blue-100 text-blue-600' : 'bg-orange-100 text-orange-600'
-                                    }`}>
-                                        {interaction.type === 'Meeting' ? <Users size={18} /> : 
-                                         interaction.type === 'Email' ? <Mail size={18} /> : <Phone size={18} />}
+                                <div key={interaction.id} className="flex gap-4 p-4 rounded-lg bg-gray-50 dark:bg-brand-muted/10 border border-gray-100 dark:border-brand-muted/20">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${interaction.type === 'Meeting' ? 'bg-brand-primary/10 text-brand-primary' :
+                                        interaction.type === 'Email' ? 'bg-brand-dark/10 text-brand-dark dark:text-brand-muted' : 'bg-brand-accent/10 text-brand-accent'
+                                        }`}>
+                                        {interaction.type === 'Meeting' ? <Users size={18} /> :
+                                            interaction.type === 'Email' ? <Mail size={18} /> : <Phone size={18} />}
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start mb-1">
@@ -287,13 +286,13 @@ const CompanyPage = () => {
                 {/* Right Column - Contacts & Actions */}
                 <div className="space-y-6">
                     {/* Key Contacts */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                             <Users size={20} /> Key Contacts
                         </h3>
                         <div className="space-y-4">
                             {companyData.contacts.map((contact, idx) => (
-                                <div key={idx} className="p-3 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+                                <div key={idx} className="p-3 rounded-lg bg-gray-50 dark:bg-brand-muted/10 border border-gray-100 dark:border-brand-muted/20">
                                     <div className="font-semibold text-gray-900 dark:text-white">{contact.name}</div>
                                     <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{contact.role}</div>
                                     <div className="space-y-1">
@@ -310,7 +309,7 @@ const CompanyPage = () => {
                     </div>
 
                     {/* Requests & Proposals */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                             <FileText size={20} /> Requests
                         </h3>
@@ -319,9 +318,8 @@ const CompanyPage = () => {
                                 <div key={prop.id} className="p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer">
                                     <div className="flex justify-between items-start mb-1">
                                         <div className="font-medium text-gray-900 dark:text-white text-sm">{prop.title}</div>
-                                        <span className={`text-[10px] px-1.5 py-0.5 rounded border ${
-                                            prop.status === 'Approved' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-yellow-50 text-yellow-600 border-yellow-200'
-                                        }`}>{prop.status}</span>
+                                        <span className={`text-[10px] px-1.5 py-0.5 rounded border ${prop.status === 'Approved' ? 'bg-brand-dark/5 text-brand-dark dark:text-white border-brand-dark/20' : 'bg-brand-accent/10 text-brand-accent border-brand-accent/20'
+                                            }`}>{prop.status}</span>
                                     </div>
                                     <div className="text-xs text-gray-400">{prop.date}</div>
                                 </div>
@@ -333,14 +331,14 @@ const CompanyPage = () => {
                     </div>
 
                     {/* Mutual Documents */}
-                    <div className="bg-white dark:bg-[#1a1a1a] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <div className="bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-[0_1px_3px_rgba(0,0,0,0.05),0_4px_12px_rgba(0,0,0,0.08),0_8px_24px_rgba(0,0,0,0.05)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)]">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                             <FileText size={20} /> Mutual Documents
                         </h3>
                         <div className="space-y-3">
                             {companyData.documents.map((doc) => (
-                                <div key={doc.id} className="flex items-center p-3 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors cursor-pointer group">
-                                    <div className="w-8 h-8 rounded bg-red-50 dark:bg-red-900/20 flex items-center justify-center text-red-500 mr-3">
+                                <div key={doc.id} className="flex items-center p-3 rounded-lg border border-gray-200 dark:border-brand-muted/20 hover:bg-gray-50 dark:hover:bg-brand-muted/10 transition-colors cursor-pointer group">
+                                    <div className="w-8 h-8 rounded bg-red-50 dark:bg-brand-primary/20 flex items-center justify-center text-brand-primary mr-3">
                                         <File size={16} />
                                     </div>
                                     <div className="flex-1 min-w-0">
