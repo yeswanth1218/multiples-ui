@@ -10,12 +10,11 @@ export const SidebarItem = ({ icon, label, active, badge, onClick, collapsed }) 
     return (
         <div
             onClick={onClick}
-            className={`flex items-center ${collapsed ? 'justify-center px-2' : 'justify-between px-4'} py-2.5 my-1 rounded-lg cursor-pointer transition-colors ${active ? 'bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-white font-medium' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-brand-primary/10'}`}
-            title={collapsed ? label : ''}
+            className={`flex items-center ${collapsed ? 'justify-center px-2' : 'justify-between px-4'} py-2.5 my-1 rounded-lg cursor-pointer transition-colors ${active ? 'bg-brand-primary/10 dark:bg-brand-primary/20 text-brand-primary dark:text-white font-medium' : 'text-black dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-brand-primary/10'}`}           title={collapsed ? label : ''}
         >
             <div className={`flex items-center ${collapsed ? 'justify-center' : 'gap-3'}`}>
                 <Icon size={18} />
-                {!collapsed && <span className="text-sm">{label}</span>}
+                {!collapsed && <span className="text-sm font-semibold">{label}</span>}
             </div>
             {!collapsed && badge && (
                 <span className="bg-gray-200 dark:bg-[#3f3f46] text-xs px-1.5 py-0.5 rounded text-gray-600 dark:text-gray-200">

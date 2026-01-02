@@ -10,130 +10,143 @@
 
 @media print {
     @page {
-        margin: 0.5cm;
-        size: auto;
+        margin: 1cm;
+        size: landscape;
     }
 
-    /* Hide Sidebar and Navbar */
+    /* Hide UI elements */
     aside,
     header,
-    .no-print {
+    .no-print,
+    button,
+    .fixed-actions {
         display: none !important;
     }
 
-    /* Reset layout constraints */
+    /* Layout Resets */
     body,
     #root,
     main,
-    div[class*="flex h-screen"],
-    div[class*="overflow-y-auto"],
-    div[class*="overflow-x-auto"],
-    div[class*="overflow-auto"] {
+    .flex-1 {
         display: block !important;
         height: auto !important;
         width: 100% !important;
         overflow: visible !important;
         position: static !important;
-        min-width: 0 !important;
-    }
-
-    table {
-        min-width: 0 !important;
-        width: 100% !important;
-    }
-
-    /* Remove background colors for ink saving and clarity */
-    body {
         background: white !important;
         color: black !important;
     }
 
-    /* Adjust padding for the main content wrapper */
-    main {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    main>div {
-        padding: 0 !important;
-    }
-
-    /* Ensure text is black for readability */
+    /* Force background colors to print */
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
 
-    /* Specific overrides for dark/* Dark mode overrides */
-    .dark {
-        color: black !important;
-        background-color: white !important;
-    }
-
-    /* Utility to hide elements in print */
-    .no-print {
-        display: none !important;
-    }
-
-    /* Workflow Page specific overrides */
-    .workflow-scroll-container {
-        overflow: visible !important;
+    /* Table Adjustments */
+    table {
         width: 100% !important;
-    }
-
-    .workflow-container {
-        display: block !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        height: auto !important;
-    }
-
-    .workflow-column {
-        width: 100% !important;
-        margin-bottom: 20px !important;
-        break-inside: avoid !important;
-    }
-
-    .dark .text-white {
-        color: black !important;
-    }
-
-    .dark .bg-black {
-        background-color: #eee !important;
-        color: black !important;
-    }
-
-    /* Hide scrollbars */
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Ensure charts and grids break properly */
-    .grid {
-        display: block !important;
-    }
-
-    .grid>div {
-        margin-bottom: 20px;
-        page-break-inside: avoid;
-    }
-
-    /* Flex containers that should wrap or stack */
-    .flex-wrap {
-        flex-wrap: wrap !important;
-    }
-
-    /* Ensure table headers repeat on new pages (browser support varies but good to have) */
-    thead {
-        display: table-header-group;
+        border-collapse: collapse !important;
+        page-break-inside: auto !important;
     }
 
     tr {
-        page-break-inside: avoid;
+        page-break-inside: avoid !important;
+        page-break-after: auto !important;
     }
 
-    /* Hide buttons that are for actions only */
-    button {
-        display: none !important;
+    td, th {
+        border: 1px solid #eee !important;
+        padding: 8px !important;
+    }
+
+    /* Grid Adjustments */
+    .grid {
+        display: grid !important;
+        gap: 1rem !important;
+    }
+
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)) !important; }
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+    .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+    .lg\:col-span-5 { grid-column: span 5 / span 5 !important; }
+    .lg\:col-span-7 { grid-column: span 7 / span 7 !important; }
+    .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+
+    /* Stat Cards specific for print */
+    .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    }
+
+    /* Reduce card sizes in print */
+    .p-6 {
+        padding: 1rem !important;
+    }
+
+    .text-3xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+    }
+
+    .mb-6 {
+        margin-bottom: 0.5rem !important;
+    }
+
+    .h-80 {
+        height: 250px !important;
+    }
+
+    .h-\[360px\] {
+        height: 250px !important;
+    }
+
+    .h-\[500px\] {
+        height: 400px !important;
+    }
+
+    /* Remove scroll containers */
+    .overflow-y-auto,
+    .overflow-x-auto,
+    .overflow-hidden {
+        overflow: visible !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    /* Action Items specific */
+    .action-item-card {
+        break-inside: avoid !important;
+        margin-bottom: 1rem !important;
+        border: 1px solid #eee !important;
+    }
+
+    /* Reset Dark Mode and simplify backgrounds for Printing */
+    .dark,
+    .bg-gradient-to-br,
+    .bg-gradient-to-b,
+    .backdrop-blur-xl,
+    .backdrop-blur-sm {
+        background: white !important;
+        background-color: white !important;
+        color: black !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    .dark * {
+        color: black !important;
+        border-color: #eee !important;
+    }
+
+    /* Remove shadows in print to save ink and look cleaner */
+    .shadow-sm, .shadow, .shadow-md, .shadow-lg, .shadow-xl, .shadow-2xl, .shadow-\[0_8px_32px_rgba\(31\,38\,135\,0\.10\)\] {
+        box-shadow: none !important;
+    }
+
+    /* Progress bars in print */
+    .bg-blue-500, .bg-green-500 {
+        background-color: #141640 !important;
     }
 }

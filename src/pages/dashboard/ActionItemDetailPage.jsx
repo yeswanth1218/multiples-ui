@@ -196,12 +196,10 @@ const ActionItemDetailPage = () => {
                     <ArrowLeft size={20} />
                 </button>
                 <div className="flex-1">
-                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
-                        <span>Action Items</span>
-                        <span>/</span>
-                        <span>{item.section}</span>
-                        <span>/</span>
-                        <span>{item.id}</span>
+                    <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">KRAs</span>
+                        <span className="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">{item.section}</span>
+                        <span className="text-xs text-gray-400 ml-2">ID: {item.id}</span>
                     </div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white line-clamp-1">{item.title}</h1>
                 </div>
@@ -315,7 +313,7 @@ const ActionItemDetailPage = () => {
                                 />
                             ) : (
                                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                                    {item.description || "No detailed description provided for this action item."}
+                                    {item.description || "No detailed description provided for this KRA."}
                                 </p>
                             )}
                         </div>

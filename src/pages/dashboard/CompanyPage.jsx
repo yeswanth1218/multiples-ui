@@ -136,6 +136,11 @@ const CompanyPage = () => {
                     <ArrowLeft size={20} className="text-gray-600 dark:text-gray-300" />
                 </button>
                 <div>
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        <span className="cursor-pointer hover:text-blue-600" onClick={() => navigate('/dashboard/portfolio')}>Portfolio</span>
+                        <span>/</span>
+                        <span className="capitalize">{companyId}</span>
+                    </div>
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                         {companyData.name}
                         <span className="text-sm px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary dark:bg-brand-primary/20 dark:text-white border border-brand-primary/20 dark:border-brand-primary/30 font-medium">

@@ -82,9 +82,10 @@ const STATUS_STYLES = {
 
 const ActionItemsPage = () => {
     const { tasks: items, addTask, updateTask, deleteTask } = useTasks();
+    const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState(null);
     const [statusFilter, setStatusFilter] = useState('All');
-    const [expandedRows, setExpandedRows] = useState({ 2: true }); // Default expand 2nd item for demo
+    const [expandedRows, setExpandedRows] = useState({ 'ME-2': true }); // Default expand 2nd item for demo
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubItemModalOpen, setIsSubItemModalOpen] = useState(false);
     const [currentParentId, setCurrentParentId] = useState(null);
@@ -98,7 +99,6 @@ const ActionItemsPage = () => {
     const [attachmentsModalOpen, setAttachmentsModalOpen] = useState(false);
     const [activeItemForAttachments, setActiveItemForAttachments] = useState(null);
     const [activeMenuId, setActiveMenuId] = useState(null);
-    const navigate = useNavigate();
 
     const [newItemData, setNewItemData] = useState({
         section: SECTIONS[0],
@@ -311,7 +311,7 @@ const ActionItemsPage = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Action Items</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage key deliverables</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Track and manage your tasks and responsibilities</p>
                 </div>
                 <div className="flex items-center gap-3 no-print">
                     <div className="relative hidden md:block">
@@ -328,7 +328,7 @@ const ActionItemsPage = () => {
                             onChange={(e) => setSelectedSection(e.target.value || null)}
                             className="appearance-none pl-3 pr-8 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                         >
-                            <option value="">All Sections</option>
+                            <option value="">All KRAs</option>
                             {SECTIONS.map(section => (
                                 <option key={section} value={section}>{section}</option>
                             ))}
@@ -606,7 +606,7 @@ const ActionItemsPage = () => {
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Section</label>
+                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">KRAs</label>
                                     <div className="relative">
                                         <select 
                                             value={newItemData.section}
@@ -712,7 +712,7 @@ const ActionItemsPage = () => {
                                 onClick={handleSaveNewItem}
                                 className="px-4 py-2 text-sm font-medium text-white bg-black dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/20 dark:shadow-white/10"
                             >
-                                Create Item
+                                Create Action Item
                             </button>
                         </div>
                     </div>
@@ -726,8 +726,8 @@ const ActionItemsPage = () => {
                                 <thead className="bg-gray-50/50 dark:bg-[#27272a]/50 sticky top-0 z-10 backdrop-blur-sm">
                                     <tr>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase w-16">Sno</th>
-                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Section</th>
-                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Action Item</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">KRA</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Description</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">ETA</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Owner</th>
@@ -810,7 +810,7 @@ const ActionItemsPage = () => {
                                                     <div className="flex items-center justify-end gap-2">
                                                         <button 
                                                             onClick={() => navigate(`/dashboard/action-items/${item.id}`, { state: { item } })}
-                                                            className="p-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/40 dark:hover:bg-blue-900/60 text-blue-600 dark:text-blue-400 rounded-lg transition-colors relative shadow-sm"
+                                                            className="p-1.5 bg-[#141640]/10 hover:bg-[#141640]/20 text-[#141640] dark:text-white dark:bg-white/10 dark:hover:bg-white/20 rounded-lg transition-colors relative shadow-sm"
                                                             title="Open Issue"
                                                         >
                                                             <ArrowLeft size={16} className="rotate-180" />
@@ -841,7 +841,10 @@ const ActionItemsPage = () => {
                                                                         </button>
                                                                     ))}
                                                                     <div className="h-px bg-gray-100 dark:bg-gray-700 my-1"></div>
-                                                                    <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#27272a] flex items-center gap-2">
+                                                                    <button 
+                                                                        onClick={() => navigate(`/dashboard/action-items/${item.id}`, { state: { item } })}
+                                                                        className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#27272a] flex items-center gap-2"
+                                                                    >
                                                                         <Edit size={14} /> Edit
                                                                     </button>
                                                                     <button className="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#27272a] flex items-center gap-2">

@@ -6,7 +6,7 @@ import HomePage from './pages/dashboard/HomePage';
 import SectorPage from './pages/dashboard/SectorPage';
 import CompanyPage from './pages/dashboard/CompanyPage';
 import OverviewPage from './pages/dashboard/OverviewPage';
-import AnalyticsPage from './pages/dashboard/AnalyticsPage';
+import PortfolioPage from './pages/dashboard/PortfolioPage';
 import WorkflowPage from './pages/dashboard/WorkflowPage';
 import NotificationsPage from './pages/dashboard/NotificationsPage';
 import NotesPage from './pages/dashboard/NotesPage';
@@ -34,39 +34,42 @@ const tableData = [
 ];
 
 import { TaskProvider } from './context/TaskContext';
+import { SectorProvider } from './context/SectorContext';
 
 export default function App() {
   return (
-    <TaskProvider>
-      <BrowserRouter>
-        <Routes>
-        {/* Login Route */}
-        <Route path="/" element={<LoginPage />} />
+    <SectorProvider>
+      <TaskProvider>
+        <BrowserRouter>
+          <Routes>
+          {/* Login Route */}
+          <Route path="/" element={<LoginPage />} />
 
-        {/* Dashboard Routes */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<HomePage />} />
-          <Route path="sector/:sectorId" element={<SectorPage />} />
-          <Route path="company/:companyId" element={<CompanyPage />} />
-          <Route path="overview" element={<OverviewPage chartData={chartData} tableData={tableData} />} />
-          <Route path="action-items" element={<ActionItemsPage />} />
-          <Route path="action-items/:itemId" element={<ActionItemDetailPage />} />
-          <Route path="analytics" element={<AnalyticsPage />} />
-          <Route path="workflow" element={<WorkflowPage />} />
-          
-          {/* Newly implemented pages */}
-          <Route path="notifications" element={<NotificationsPage />} />
-          <Route path="notes" element={<NotesPage />} />
-          <Route path="emails" element={<EmailsPage />} />
-          <Route path="schedule" element={<SchedulePage />} />
-          <Route path="team" element={<TeamPage />} />
-        </Route>
+          {/* Dashboard Routes */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<HomePage />} />
+            <Route path="sector/:sectorId" element={<SectorPage />} />
+            <Route path="company/:companyId" element={<CompanyPage />} />
+            <Route path="overview" element={<OverviewPage chartData={chartData} tableData={tableData} />} />
+            <Route path="action-items" element={<ActionItemsPage />} />
+            <Route path="action-items/:itemId" element={<ActionItemDetailPage />} />
+            <Route path="portfolio" element={<PortfolioPage />} />
+            <Route path="workflow" element={<WorkflowPage />} />
+            
+            {/* Newly implemented pages */}
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="notes" element={<NotesPage />} />
+            <Route path="emails" element={<EmailsPage />} />
+            <Route path="schedule" element={<SchedulePage />} />
+            <Route path="team" element={<TeamPage />} />
+          </Route>
 
-        {/* Catch-all redirect */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      </BrowserRouter>
-    </TaskProvider>
+          {/* Catch-all redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        </BrowserRouter>
+      </TaskProvider>
+    </SectorProvider>
   );
 }

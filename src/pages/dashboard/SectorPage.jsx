@@ -66,17 +66,17 @@ const SectorPage = () => {
             <div className="flex items-center justify-between mb-6">
                 <div>
                     <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
-                        <span className="cursor-pointer hover:text-blue-600" onClick={() => navigate('/dashboard/home')}>Home</span>
+                        <span className="cursor-pointer hover:text-blue-600" onClick={() => navigate('/dashboard/portfolio')}>Portfolio</span>
                         <span>/</span>
                         <span className="capitalize">{sectorId}</span>
                     </div>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-white capitalize">{sectorId} Portfolio</h2>
                 </div>
                 <button 
-                    onClick={() => navigate('/dashboard/home')}
+                    onClick={() => navigate('/dashboard/portfolio')}
                     className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg hover:bg-gray-50 dark:hover:bg-white/10 transition-colors no-print"
                 >
-                    Back to Sectors
+                    Back to Portfolio
                 </button>
             </div>
 

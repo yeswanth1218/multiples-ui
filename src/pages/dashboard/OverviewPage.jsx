@@ -35,21 +35,15 @@ import { PieChart,
     ReferenceDot
 } from 'recharts';
 
+import { useSectors } from '../../context/SectorContext';
+
 const OverviewPage = ({ chartData: initialChartData, tableData: initialTableData }) => {
+    const { sectors: globalSectors } = useSectors();
     const [savingsData, setSavingsData] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const [selectedSector, setSelectedSector] = useState('All');
 
-    const sectors = [
-        'FinTech',
-        'HealthCare',
-        'AI & ML',
-        'SaaS',
-        'Agritech',
-        'Pharma',
-        'Manufacturing',
-        'EduTech'
-    ];
+    const sectors = globalSectors.map(s => s.title);
 
     // Reactive data based on selection
     const getChartData = () => {

@@ -7,10 +7,7 @@ import {
     ListTodo,
     BarChart2,
     FileText,
-    Mail,
     Workflow,
-    Calendar,
-    Users,
     Search,
     ChevronRight,
     Moon,
@@ -18,16 +15,15 @@ import {
     Home,
     LogOut,
     Plus,
+    Printer,
 } from 'lucide-react';
-import { SidebarItem, SectionHeader } from '../components/dashboard/Shared';
-import { useTasks } from '../context/TaskContext';
+import { SidebarItem } from '../components/dashboard/Shared';
 
 const DashboardLayout = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
-    const { notes } = useTasks();
 
     // Apply dark mode class on mount and when darkMode changes
     useEffect(() => {
@@ -42,22 +38,52 @@ const DashboardLayout = () => {
         setDarkMode(!darkMode);
     };
 
-    const getActivePage = () => {
-        const path = location.pathname.split('/').pop();
-        return path.charAt(0).toUpperCase() + path.slice(1) || 'Home';
+    const getBreadcrumbs = () => {
+        const parts = location.pathname.split('/').filter(Boolean);
+        // parts will be ['dashboard', 'home'] or ['dashboard', 'sector', 'bfsi']
+        
+        const breadcrumbs = [];
+        
+        if (parts.includes('sector') || parts.includes('company') || parts.includes('portfolio')) {
+            breadcrumbs.push('Portfolio');
+            if (parts.includes('sector')) breadcrumbs.push('Sector');
+            if (parts.includes('company')) breadcrumbs.push('Company');
+            
+            const lastPart = parts[parts.length - 1];
+            if (lastPart !== 'portfolio' && lastPart !== 'sector' && lastPart !== 'company') {
+                breadcrumbs.push(lastPart.charAt(0).toUpperCase() + lastPart.slice(1));
+            }
+        } else {
+            const lastPart = parts[parts.length - 1];
+            if (lastPart && lastPart !== 'dashboard') {
+                breadcrumbs.push(lastPart.charAt(0).toUpperCase() + lastPart.slice(1).replace(/-/g, ' '));
+            } else {
+                breadcrumbs.push('Home');
+            }
+        }
+        
+        return breadcrumbs;
     };
+
+    const breadcrumbs = getBreadcrumbs();
 
     const navItems = [
         { icon: Home, label: 'Home', path: '/dashboard/home' },
         { icon: CheckSquare, label: 'Overview', path: '/dashboard/overview' },
-        { icon: ListTodo, label: 'Action Items', path: '/dashboard/action-items', badge: 'New' },
-        { icon: BarChart2, label: 'Analytics', path: '/dashboard/analytics' },
+        { icon: ListTodo, label: 'Action Items', path: '/dashboard/action-items' },
+        { icon: BarChart2, label: 'Portfolio', path: '/dashboard/portfolio' },
         { icon: FileText, label: 'Notes', path: '/dashboard/notes' },
-        { icon: Mail, label: 'Emails', path: '/dashboard/emails' },
         { icon: Workflow, label: 'Workflow', path: '/dashboard/workflow' },
-        { icon: Calendar, label: 'Schedule', path: '/dashboard/schedule' },
-        { icon: Users, label: 'Team', path: '/dashboard/team' },
     ];
+
+    const isItemActive = (itemPath) => {
+        if (itemPath === '/dashboard/portfolio') {
+            return location.pathname.startsWith('/dashboard/portfolio') || 
+                   location.pathname.startsWith('/dashboard/sector') || 
+                   location.pathname.startsWith('/dashboard/company');
+        }
+        return location.pathname === itemPath;
+    };
 
     return (
         <div className={`flex h-screen bg-gray-50 dark:bg-brand-dark font-sans transition-colors duration-300 ${darkMode ? 'dark' : ''}`}>
@@ -90,55 +116,12 @@ const DashboardLayout = () => {
                                 icon={item.icon}
                                 label={item.label}
                                 badge={item.badge}
-                                active={location.pathname === item.path}
+                                active={isItemActive(item.path)}
                                 onClick={() => navigate(item.path)}
                                 collapsed={!sidebarOpen}
                             />
                         ))}
                     </nav>
-
-                    {sidebarOpen && (
-                        <>
-                            <SectionHeader
-                                title="Quick Notes"
-                                action
-                                onAction={() => navigate('/dashboard/notes')}
-                            />
-                            <div className="mt-1 mb-4 space-y-1">
-                                {notes && notes.length > 0 ? (
-                                    notes.slice(0, 5).map(note => (
-                                        <div
-                                            key={note.id}
-                                            onClick={() => navigate('/dashboard/notes')}
-                                            className="flex items-center gap-2 px-4 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-black dark:hover:text-white cursor-pointer group transition-colors"
-                                        >
-                                            <div className="w-2 h-2 rounded-full border border-gray-400 group-hover:border-blue-500 transition-colors"></div>
-                                            <span className="truncate">{note.title}</span>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="px-4 py-2 text-xs text-gray-400 italic">No notes yet</div>
-                                )}
-                            </div>
-
-                            <SectionHeader title="Your Spaces" action />
-                            <SectionHeader title="Folders" action />
-                            <div className="mt-2 space-y-1">
-                                <div className="flex items-center gap-2 px-4 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-black dark:hover:text-white cursor-pointer">
-                                    <div className="w-2 h-2 rounded-full border border-gray-400"></div>
-                                    <span>Quno Corp</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-4 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-black dark:hover:text-white cursor-pointer">
-                                    <div className="w-2 h-2 rounded-full border border-gray-400"></div>
-                                    <span>Arc Redesign</span>
-                                </div>
-                                <div className="flex items-center gap-2 px-4 py-2 text-gray-500 dark:text-gray-400 text-sm hover:text-black dark:hover:text-white cursor-pointer">
-                                    <div className="w-2 h-2 rounded-full border border-gray-400"></div>
-                                    <span>Finzo Expansion</span>
-                                </div>
-                            </div>
-                        </>
-                    )}
                 </div>
 
                 <div className="p-3 border-t border-gray-200 dark:border-brand-muted/20 flex-shrink-0">
@@ -166,11 +149,24 @@ const DashboardLayout = () => {
                             </div>
                         </button>
                         <Home size={14} />
-                        <ChevronRight size={14} />
-                        <span className="text-gray-900 dark:text-white font-medium">{getActivePage()}</span>
+                        {breadcrumbs.map((breadcrumb, index) => (
+                            <React.Fragment key={index}>
+                                <ChevronRight size={14} />
+                                <span className={`${index === breadcrumbs.length - 1 ? 'text-gray-900 dark:text-white font-medium' : ''}`}>
+                                    {breadcrumb}
+                                </span>
+                            </React.Fragment>
+                        ))}
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 no-print">
+                        <button
+                            onClick={() => window.print()}
+                            className="p-2 rounded-full bg-gray-100 dark:bg-brand-muted/20 text-gray-600 dark:text-white hover:bg-gray-200 dark:hover:bg-brand-muted/30 transition-colors"
+                            title="Print Page"
+                        >
+                            <Printer size={18} />
+                        </button>
                         <button
                             onClick={() => navigate('/dashboard/notifications')}
                             className="p-2 rounded-full bg-gray-100 dark:bg-brand-muted/20 text-gray-600 dark:text-white hover:bg-gray-200 dark:hover:bg-brand-muted/30 transition-colors relative"
