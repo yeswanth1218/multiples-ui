@@ -343,6 +343,15 @@ export const TaskProvider = ({ children }) => {
         }
     ]);
 
+    const [sections, setSections] = useState(SECTIONS);
+
+    const addSection = (sectionName) => {
+        if (sectionName && !sections.includes(sectionName)) {
+            setSections(prev => [...prev, sectionName]);
+        }
+    };
+
+
     const generateId = () => {
         // Find the highest ME-XXX number
         const maxId = tasks.reduce((max, task) => {
@@ -410,7 +419,7 @@ export const TaskProvider = ({ children }) => {
 
     return (
         <TaskContext.Provider value={{ 
-            tasks, addTask, updateTask, deleteTask, SECTIONS,
+            tasks, addTask, updateTask, deleteTask, SECTIONS: sections, addSection,
             notes, addNote, updateNote, deleteNote, linkNoteToTask, unlinkNoteFromTask
         }}>
             {children}

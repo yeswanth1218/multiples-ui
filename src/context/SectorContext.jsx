@@ -42,61 +42,61 @@ export const SectorProvider = ({ children }) => {
         {
             title: 'BFSI',
             logo: fintechLogo,
-            count: '12 Projects',
+            count: '12',
             desc: 'Banking, Financial Services, and Insurance',
         },
         {
             title: 'HealthCare/Pharma',
             logo: healthcareLogo,
-            count: '8 Projects',
+            count: '8',
             desc: 'Medical records & patient management',
         },
         {
             title: 'IT',
             logo: aiLogo,
-            count: '5 Projects',
+            count: '5',
             desc: 'Software and Information Technology',
         },
         {
             title: 'Enterprise',
             iconName: 'Cloud',
-            count: '10 Projects',
+            count: '10',
             desc: 'Enterprise Services',
         },
         {
             title: 'Green',
             logo: agritechLogo,
-            count: '6 Projects',
+            count: '6',
             desc: 'Agricultural innovation & tracking',
         },
         {
             title: 'Fundraising & Investor Relations',
             logo: pharmaLogo,
-            count: '4 Projects',
+            count: '4',
             desc: 'Management of fundraising and Invester relationships',
         },
         {
             title: 'Consumer / Manufacturing',
             logo: manufacturingLogo,
-            count: '9 Projects',
+            count: '9',
             desc: 'Industrial production & supply chain',
         },
         {
             title: 'Credit',
             logo: edtechLogo,
-            count: '7 Projects',
+            count: '7',
             desc: 'Credit section',
         },
         {
             title: 'Fitness',
             iconName: 'Fitness',
-            count: '0 Projects',
+            count: '0',
             desc: 'Health and wellness tracking',
         },
         {
             title: 'HR',
             iconName: 'HR',
-            count: '0 Projects',
+            count: '0',
             desc: 'Human Resources and talent management',
         },
     ]);
@@ -104,7 +104,7 @@ export const SectorProvider = ({ children }) => {
     const addSector = (newSector) => {
         setSectors(prev => [...prev, {
             ...newSector,
-            count: '0 Projects', // New sectors start with 0 projects
+            count: '0', // New sectors start with 0
         }]);
     };
 

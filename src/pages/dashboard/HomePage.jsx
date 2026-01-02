@@ -63,13 +63,6 @@ const HomePage = () => {
                             className="relative bg-white dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#0f0f0f] p-6 rounded-2xl border border-brand-secondary/30 dark:border-white/10 shadow-lg shadow-brand-secondary/10 dark:shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_12px_rgba(0,0,0,0.4),0_8px_24px_rgba(0,0,0,0.3)] hover:border-brand-primary/50 dark:hover:border-white/20 transition-all duration-300 cursor-pointer group hover:-translate-y-1 flex flex-col overflow-hidden"
                         >
 
-                            {/* Count Badge */}
-                            <div className="absolute top-4 right-4 z-10">
-                                <span className="px-2 py-1 rounded text-[10px] font-semibold bg-[#898A9F] text-white border border-transparent shadow-sm uppercase tracking-wide">
-                                    {sector.count}
-                                </span>
-                            </div>
-
                             <div className="flex-1 flex items-center justify-center py-8 min-h-[140px] relative z-10">
                                 <div className={`px-6 py-3 rounded-full border border-brand-primary/10 bg-brand-primary/5 shadow-sm flex items-center justify-center transition-transform group-hover:scale-110 duration-300`}>
                                     {sector.logo ? (

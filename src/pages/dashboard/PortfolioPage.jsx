@@ -191,10 +191,6 @@ const PortfolioPage = () => {
                         </select>
                         <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                     </div>
-                    
-                    <button className="px-4 py-2 bg-gray-900 dark:bg-white dark:text-black text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors text-sm font-medium">
-                        Export Data
-                    </button>
                 </div>
             </div>
 

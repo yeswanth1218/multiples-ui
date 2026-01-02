@@ -57,22 +57,6 @@ const SECTION_ICONS = {
     "Others": MoreHorizontal
 };
 
-const SECTIONS = [
-    "Strategy & Vision",
-    "Deal Sourcing & Origination",
-    "Deal Execution & Structuring",
-    "Portfolio Company Oversight & Value Creation",
-    "Exit Strategy & Execution",
-    "Stakeholder Management (Internal & External)",
-    "Investment Committee",
-    "Franchisee Building",
-    "Fundraising & Investor relations",
-    "Team Leadership & Development",
-    "Brand Building",
-    "Regulatory & Compliance Adherence",
-    "Others"
-];
-
 const STATUS_STYLES = {
     "In-Progress": "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300",
     "Done": "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
@@ -81,13 +65,15 @@ const STATUS_STYLES = {
 };
 
 const ActionItemsPage = () => {
-    const { tasks: items, addTask, updateTask, deleteTask } = useTasks();
+    const { tasks: items, addTask, updateTask, deleteTask, SECTIONS, addSection } = useTasks();
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState(null);
     const [statusFilter, setStatusFilter] = useState('All');
     const [expandedRows, setExpandedRows] = useState({ 'ME-2': true }); // Default expand 2nd item for demo
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubItemModalOpen, setIsSubItemModalOpen] = useState(false);
+    const [isKRAModalOpen, setIsKRAModalOpen] = useState(false);
+    const [newKRAName, setNewKRAName] = useState('');
     const [currentParentId, setCurrentParentId] = useState(null);
     
     // New Modals State
@@ -151,6 +137,13 @@ const ActionItemsPage = () => {
 
         addTask(newItem);
         setIsModalOpen(false);
+    };
+
+    const handleSaveNewKRA = () => {
+        if (!newKRAName.trim()) return;
+        addSection(newKRAName.trim());
+        setIsKRAModalOpen(false);
+        setNewKRAName('');
     };
 
     const handleAddSubItem = (itemId) => {
@@ -336,6 +329,13 @@ const ActionItemsPage = () => {
                         <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
                     </div>
                     <button 
+                        onClick={() => setIsKRAModalOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-[#18181b] border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors shadow-sm"
+                    >
+                        <Plus size={16} />
+                        Add new KRA
+                    </button>
+                    <button 
                         onClick={handleAddNewItem}
                         className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gray-900 dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors shadow-sm"
                     >
@@ -375,6 +375,47 @@ const ActionItemsPage = () => {
                     </div>
                 ))}
             </div>
+
+            {isKRAModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="bg-white dark:bg-[#18181b] w-full max-w-md rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-in zoom-in-95 duration-200">
+                        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Add New KRA</h3>
+                            <button onClick={() => setIsKRAModalOpen(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        
+                        <div className="p-6 space-y-4">
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">KRA Name</label>
+                                <input 
+                                    type="text"
+                                    value={newKRAName}
+                                    onChange={(e) => setNewKRAName(e.target.value)}
+                                    placeholder="Enter KRA name..."
+                                    className="w-full bg-gray-50 dark:bg-[#27272a] border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 transition-colors"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3 bg-gray-50/50 dark:bg-[#27272a]/50">
+                            <button 
+                                onClick={() => setIsKRAModalOpen(false)}
+                                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-[#3f3f46] rounded-lg transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={handleSaveNewKRA}
+                                className="px-4 py-2 text-sm font-medium text-white bg-black dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-lg shadow-black/20 dark:shadow-white/10"
+                            >
+                                Save KRA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {isSubItemModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -747,7 +788,7 @@ const ActionItemsPage = () => {
                                                 <td className="px-2 py-3 text-sm text-gray-500 dark:text-gray-400">{item.id}</td>
                                                 <td className="px-2 py-3 text-sm text-gray-500 dark:text-gray-400">
                                                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-gray-200 bg-white text-gray-600 shadow-sm dark:bg-[#18181b] dark:border-gray-700 dark:text-gray-300 text-xs font-medium">
-                                                        {SECTION_ICONS[item.section] && React.createElement(SECTION_ICONS[item.section], { size: 12 })}
+                                                        {(SECTION_ICONS[item.section] || MoreHorizontal) && React.createElement(SECTION_ICONS[item.section] || MoreHorizontal, { size: 12 })}
                                                         {item.section}
                                                     </span>
                                                 </td>
