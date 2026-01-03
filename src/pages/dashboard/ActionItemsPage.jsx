@@ -69,7 +69,7 @@ const ActionItemsPage = () => {
     const navigate = useNavigate();
     const [selectedSection, setSelectedSection] = useState(null);
     const [statusFilter, setStatusFilter] = useState('All');
-    const [expandedRows, setExpandedRows] = useState({ 'ME-2': true }); // Default expand 2nd item for demo
+    const [expandedRows, setExpandedRows] = useState({}); // No items expanded by default
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubItemModalOpen, setIsSubItemModalOpen] = useState(false);
     const [isKRAModalOpen, setIsKRAModalOpen] = useState(false);
