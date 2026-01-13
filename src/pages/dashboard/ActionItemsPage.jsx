@@ -441,7 +441,7 @@ const ActionItemsPage = () => {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ETA</label>
+                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Closure Date</label>
                                     <div className="relative">
                                         <input 
                                             type="date" 
@@ -693,7 +693,7 @@ const ActionItemsPage = () => {
 
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">ETA</label>
+                                    <label className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Closure Date</label>
                                     <div className="relative">
                                         <input 
                                             type="date" 
@@ -770,7 +770,7 @@ const ActionItemsPage = () => {
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">KRA</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Description</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Status</th>
-                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">ETA</th>
+                                        <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Closure Date</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Owner</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Assignee</th>
                                         <th className="px-2 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Progress</th>

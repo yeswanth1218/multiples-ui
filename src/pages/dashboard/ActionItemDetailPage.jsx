@@ -545,7 +545,7 @@ const ActionItemDetailPage = () => {
                         
                         <div className="space-y-3">
                             <div>
-                                <label className="text-xs text-gray-500 block mb-1">Due Date</label>
+                                <label className="text-xs text-gray-500 block mb-1">Closure Date</label>
                                 {isEditing ? (
                                     <input 
                                         type="date"
